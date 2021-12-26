@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="layout(title, content)">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Josip Frkin">
+    <title th:replace="${title}">Deafult naslov</title>
+
+    <link rel="stylesheet" type="text/css" th:href="@{assets/app.css}" />
+    <script src="https://use.fontawesome.com/789666b2eb.js"></script>
+</head>
+
+<body class="h-screen">
+    <header th:replace="layout/fragments/header :: header">HEADER</header>
+
+    <div class="h-full">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-4xl mx-auto mt-3">
+                <th:block th:replace="${content}">CONTENT</th:block>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

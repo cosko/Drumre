@@ -1,0 +1,18 @@
+{
+  "name": "lab1",
+  "version": "1.0.0",
+  "description": "Prvi labos za predmet Društvene mreže",
+  "author": "Josip Frkin",
+  "scripts": {
+    "watch": "parcel watch src/main/resources/ui/app.js --dist-dir src/main/resources/static/assets",
+    "build-assets": "parcel build src/main/resources/ui/app.js --dist-dir src/main/resources/static/assets"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.0",
+    "concurrently": "^6.4.0",
+    "cssnano": "^5.0.12",
+    "parcel": "^2.0.1",
+    "postcss": "^8.4.4",
+    "tailwindcss": "^2.2.19"
+  }
+}

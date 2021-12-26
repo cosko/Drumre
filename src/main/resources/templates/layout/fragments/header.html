@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <header>
+        <div class="w-full bg-blue-400 h-12 py-2">
+            <div class="flex justify-between">
+                <a th:href="@{/}" class="font-bold text-white text-2xl px-3">Movies</a>
+                <div class="flex justify-center items-center">
+                    <a th:href="@{/movies}" th:text="Movies"
+                       class="text-white underline mr-2"/>
+                    <a th:href="@{/weather}" th:text="Weather"
+                       class="text-white underline"/>
+                </div>
+                <div class="flex justify-center items-center">
+                    <div sec:authorize="isAuthenticated()" class="flex">
+                        <a th:text="Profil" th:href="@{/profile}"
+                           class="text-white text-lg mr-2 items-center"></a>
+                        <form th:action="@{/logout}" method="post">
+                            <input type="submit" value="Logout"
+                                   class="bg-red-400 rounded px-3 py-1 hover:bg-red-500
+                           cursor-pointer mr-2 text-white"/>
+                        </form>
+                    </div>
+                    <div sec:authorize="isAnonymous()">
+                        <a th:href="@{/login}" th:text="Login"
+                           class="bg-green-400 rounded px-3 py-1 hover:bg-green-500
+                                  cursor-pointer mr-2 text-white">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/base :: layout(~{::title}, ~{::#page})}">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Lab1</title>
+</head>
+<body>
+<div id="page">
+    <div th:each="movie:${movies}" class="px-4 py-3">
+        <div class="flex">
+            <div class="mr-3">
+                <img th:src="${movie.image.original}" alt="">
+                <p th:text="'Prosječna ocjena: ' + ${movie.rating.average} + '/10'"></p>
+                <p th:text="'Premijera: ' + ${movie.premiered}"></p>
+            </div>
+            <div>
+                <p th:text="${movie.name}" class="mb-3 text-2xl"></p>
+                <th:block th:utext="${movie.summary}"></th:block>
+            </div>
+        </div>
+        <hr>
+    </div>
+</div>
+</body>
+</html>

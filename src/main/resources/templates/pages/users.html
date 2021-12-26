@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/base :: layout(~{::title}, ~{::#page})}">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Lab1</title>
+</head>
+<body>
+    <div id="page">
+        <div th:each="user:${users}">
+            <p th:text="${user.firstName}"></p>
+            <p th:text="${user.lastName}"></p>
+            <p th:text="${user.email}"></p>
+        </div>
+        <button class="bg-red-500 rounded px-3 py-2 hover:bg-red-600 cursor-pointer ml-2 text-red-200">
+            Bok svima
+        </button>
+    </div>
+</body>
+</html>
