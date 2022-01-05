@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.reactive.result.view.RedirectView;
+import org.springframework.web.servlet.ModelAndView;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
@@ -24,7 +25,7 @@ public class GetTwitterTokenController {
 		
     @CrossOrigin("https://api.twitter.com")
     @RequestMapping("/getTwitterToken")
-    public RedirectView getTwitterToken(HttpServletRequest request, Model model) {
+    public ModelAndView getTwitterToken(HttpServletRequest request, Model model) {
     	//this will be the URL that we take the user to
     	String twitterUrl = "";
         System.out.println("entered");
@@ -59,17 +60,8 @@ public class GetTwitterTokenController {
 		}
     	
 		//redirect to the Twitter URL
-		RedirectView redirectView = new RedirectView();
         System.out.println("redirected lol");
-        redirectView.setUrl(twitterUrl);
-        System.out.println(redirectView.getUrl());
-        //
-        //
-        ///redirect je sjeban idk zas
-        //
-        //
-        //
-        return redirectView;
+        return new ModelAndView("redirect:" + twitterUrl);
     }
     
 	public Twitter getTwitter() {
