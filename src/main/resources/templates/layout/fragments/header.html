@@ -8,12 +8,10 @@
     <header>
         <div class="w-full bg-blue-400 h-12 py-2">
             <div class="flex justify-between">
-                <a th:href="@{/}" class="font-bold text-white text-2xl px-3">Movies</a>
+                <a th:href="@{/}" class="font-bold text-white text-2xl px-3">MyList<span style="font-size: small;">of</span>Movies</a>
                 <div class="flex justify-center items-center">
                     <a th:href="@{/movies}" th:text="Movies"
-                       class="text-white underline mr-2"/>
-                    <a th:href="@{/weather}" th:text="Weather"
-                       class="text-white underline"/>
+                       class="text-white underline mr-2 auto"/>
                 </div>
                 <div class="flex justify-center items-center">
                     <div sec:authorize="isAuthenticated()" class="flex">
