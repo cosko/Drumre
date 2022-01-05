@@ -24,8 +24,8 @@
         </div>
         <th:block th:each="url : ${urls}">
             <a th:href="${url.value}" class="relative mt-6 border rounded-md py-2 text-sm text-gray-800 bg-gray-100 hover:bg-gray-200 flex">
-                <span class="absolute left-0 top-0 flex items-center justify-center h-full w-10 text-gray-500"><i class="fab fa-google"></i></span>
-                <span class="ml-8">Google račun</span>
+                <span class="absolute left-0 top-0 flex items-center justify-center h-full w-10 text-gray-500"><i class="fab " th:classappend="'fa-'+${#strings.toLowerCase(url.key)}"></i></span>
+                <span class="ml-8" th:text="${url.key}"></span>
             </a>
         </th:block>
     </div>
