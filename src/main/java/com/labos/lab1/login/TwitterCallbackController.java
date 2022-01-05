@@ -29,7 +29,6 @@ public class TwitterCallbackController {
 
         try {
             AccessToken token = twitter.getOAuthAccessToken(requestToken, oauthVerifier);
-            System.out.println("oh no " + token.toString());
 
             request.getSession().removeAttribute("requestToken");
             request.getSession().setAttribute("username", twitter.getScreenName());
@@ -40,7 +39,6 @@ public class TwitterCallbackController {
             
             return "index";
         } catch(Exception e){
-            System.out.println("error lol");
             System.out.println(e.getMessage());
             return "redirect:";
         }
