@@ -1,72 +1,117 @@
 package com.labos.lab1.movie;
 
+import org.json.JSONObject;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document("movies")
 public class Movie {
 
-  private String name;
-  private String summary;
-  private String premiered;
-  private Rating rating;
-  private Picture image;
+  private String title;
+  private String year;
+  private String runtime;
+  private String genre;
+  private String director;
+  private String actors;
+  private String plot;
+  private String poster;
+  private String imdbRating;
 
-  public Movie(String name, String summary, String premiered, Rating rating, Picture image) {
-    this.name = name;
-    this.summary = summary;
-    this.premiered = premiered;
-    this.rating = rating;
-    this.image = image;
+  public void setMovieParams(JSONObject jsonObject){
+    this.setTitle(jsonObject.getString("Title"));
+    this.setYear(jsonObject.getString("Year"));
+    this.setRuntime(jsonObject.getString("Runtime"));
+    this.setGenre(jsonObject.getString("Genre"));
+    this.setDirector(jsonObject.getString("Director"));
+    this.setActors(jsonObject.getString("Actors"));
+    this.setPlot(jsonObject.getString("Plot"));
+    this.setPoster(jsonObject.getString("Poster"));
+    this.setImdbRating(jsonObject.getString("imdbRating"));
   }
 
-  public String getName() {
-    return name;
+  public String getTitle() {
+    return title;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setTitle(String title) {
+    this.title = title;
   }
 
-  public String getSummary() {
-    return summary;
+  public String getYear() {
+    return year;
   }
 
-  public void setSummary(String summary) {
-    this.summary = summary;
+  public void setYear(String year) {
+    this.year = year;
   }
 
-  public String getPremiered() {
-    return premiered;
+  public String getRuntime() {
+    return runtime;
   }
 
-  public void setPremiered(String premiered) {
-    this.premiered = premiered;
+  public void setRuntime(String runtime) {
+    this.runtime = runtime;
   }
 
-  public Rating getRating() {
-    return rating;
+  public String getGenre() {
+    return genre;
   }
 
-  public void setRating(Rating rating) {
-    this.rating = rating;
+  public void setGenre(String genre) {
+    this.genre = genre;
   }
 
-  public Picture getImage() {
-    return image;
+  public String getDirector() {
+    return director;
   }
 
-  public void setImage(Picture image) {
-    this.image = image;
+  public void setDirector(String director) {
+    this.director = director;
+  }
+
+  public String getActors() {
+    return actors;
+  }
+
+  public void setActors(String actors) {
+    this.actors = actors;
+  }
+
+  public String getPlot() {
+    return plot;
+  }
+
+  public void setPlot(String plot) {
+    this.plot = plot;
+  }
+
+  public String getPoster() {
+    return poster;
+  }
+
+  public void setPoster(String poster) {
+    this.poster = poster;
+  }
+
+  public String getImdbRating() {
+    return imdbRating;
+  }
+
+  public void setImdbRating(String imdbRating) {
+    this.imdbRating = imdbRating;
   }
 
   @Override
   public String toString() {
     return "Movie{" +
-        "name='" + name + '\'' +
-        ", summary='" + summary + '\'' +
-        ", premiered='" + premiered + '\'' +
-        ", rating=" + rating +
-        ", image=" + image +
-        '}';
+            "title='" + title + '\'' +
+            ", year='" + year + '\'' +
+            ", runtime='" + runtime + '\'' +
+            ", genre='" + genre + '\'' +
+            ", director='" + director + '\'' +
+            ", actors='" + actors + '\'' +
+            ", plot='" + plot + '\'' +
+            ", poster='" + poster + '\'' +
+            ", imdbRating='" + imdbRating + '\'' +
+            '}';
   }
 }

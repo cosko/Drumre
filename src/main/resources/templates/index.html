@@ -1,3 +1,4 @@
+<!--
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/base :: layout(~{::title}, ~{::#page})}">
 <head>
@@ -6,8 +7,141 @@
     <title>Lab1</title>
 </head>
 <body>
-    <main id="page">
-        <span>bok ja sam prazan</span>
-    </main>
+&lt;!&ndash;<div id="pagePopular">
+    <div th:each="movie:${popularMovies}" class="px-4 py-3">
+        <div class="flex">
+            <div class="mr-3">
+                <img th:src="${movie.poster}" alt="">
+                <p th:text="'Prosječna ocjena: ' + ${movie.imdbRating} + '/10'"></p>
+                <p th:text="'Glumci: ' + ${movie.actors}"></p>
+            </div>
+            <div>
+                <p th:text="${movie.title}" class="mb-3 text-2xl"></p>
+                <th:block th:utext="${movie.plot}"></th:block>
+            </div>
+        </div>
+        <hr>
+    </div>
+</div>&ndash;&gt;
+
+&lt;!&ndash;<div id="pagePopular">
+    <div th:each="movie:${popularMovies}" class="px-4 py-3">
+        <div>
+            <p th:text="abab" class="mb-3 text-2xl"></p>
+            <th:block th:utext="2002"></th:block>
+        </div>
+    </div>
+    <hr>
+</div>&ndash;&gt;
+
+<main id="page">
+    <span>bok ja sam MLM</span>
+    <p th:text="${popularMovies.get(10).title}" class="mb-3 text-2xl"></p>
+    <br>
+    <p th:text="${popularMovies.get(10).plot}" class="mb-3 text-2xl"></p>
+</main>
+
+&lt;!&ndash;<style>
+    #movies {
+        font-family: Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    #movies td, #movies th {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+
+    #movies tr:nth-child(even){background-color: #f2f2f2;}
+
+    #movies tr:hover {background-color: #ddd;}
+
+    #movies th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+        background-color: #04AA6D;
+        color: white;
+    }
+</style>
+<div>
+    <table id="movies">
+        <thead>
+        <tr>
+            <th> Title</th>
+            <th> Year</th>
+            <th> IMDb rating</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="movie: ${popularMovies}">
+            <td th:text="${movie.title}"></td>
+            <td th:text="${movie.year}"></td>
+            <td th:text="${movie.imdbRating}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>&ndash;&gt;
+</body>
+</html>-->
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/base :: layout(~{::title}, ~{::#page})}">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Lab1</title>
+</head>
+<body>
+<div id="page">
+    <h2>Top 15 currently popular movies</h2>
+    <div th:each="movie:${popularMovies}" class="px-4 py-3">
+        <div class="flex">
+            <div class="mr-3">
+                <img th:src="${movie.poster}" alt="">
+                <p th:text="'Prosječna ocjena: ' + ${movie.imdbRating} + '/10'"></p>
+                <p th:text="'Actors: ' + ${movie.actors}"></p>
+            </div>
+            <div>
+                <p th:text="${movie.title}" class="mb-3 text-2xl"></p>
+                <th:block th:utext="${movie.plot}"></th:block>
+            </div>
+        </div>
+        <hr>
+    </div>
+    <br>
+    <h2>15 top rated movies</h2>
+    <div th:each="movie:${topRatedMovies}" class="px-4 py-3">
+        <div class="flex">
+            <div class="mr-3">
+                <img th:src="${movie.poster}" alt="">
+                <p th:text="'Prosječna ocjena: ' + ${movie.imdbRating} + '/10'"></p>
+                <p th:text="'Actors: ' + ${movie.actors}"></p>
+            </div>
+            <div>
+                <p th:text="${movie.title}" class="mb-3 text-2xl"></p>
+                <th:block th:utext="${movie.plot}"></th:block>
+            </div>
+        </div>
+        <hr>
+    </div>
+    <br>
+    <h2>15 most anticipated movies</h2>
+    <div th:each="movie:${upcomingMovies}" class="px-4 py-3">
+        <div class="flex">
+            <div class="mr-3">
+                <img th:src="${movie.poster}" alt="">
+                <p th:text="'Prosječna ocjena: ' + ${movie.imdbRating} + '/10'"></p>
+                <p th:text="'Actors: ' + ${movie.actors}"></p>
+            </div>
+            <div>
+                <p th:text="${movie.title}" class="mb-3 text-2xl"></p>
+                <th:block th:utext="${movie.plot}"></th:block>
+            </div>
+        </div>
+        <hr>
+    </div>
+</div>
 </body>
 </html>
