@@ -56,6 +56,7 @@ public class LoginController {
     clientRegistrations.forEach(registration ->
                                     oauth2AuthenticationUrls.put(registration.getClientName(),
                                                                  authorizationRequestBaseUri + "/" + registration.getRegistrationId()));
+    oauth2AuthenticationUrls.put("Twitter", "/getTwitterToken");
     model.addAttribute("urls", oauth2AuthenticationUrls);
     if (logout != null){
       model.addAttribute("message", "Uspješno ste se izlogirali");
