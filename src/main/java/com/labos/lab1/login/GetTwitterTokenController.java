@@ -58,7 +58,6 @@ public class GetTwitterTokenController {
 	public Twitter getTwitter() {
 		Twitter twitter  = null;
 
-        System.out.println("setting consumer key and secret");
         String consumerKey = env.getProperty("twitterAPIKey");
 		String consumerSecret=env.getProperty("twitterAPIKeySecret");
         //String oauthToken=env.getProperty("twitteroauthToken");
