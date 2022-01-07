@@ -37,12 +37,16 @@ public class TwitterCallbackController {
 
         try {
             AccessToken token = twitter.getOAuthAccessToken(requestToken, oauthVerifier);
-            
-            if(userRepository.findByTwitterId(twitter.getId()) == null){
+            System.out.println("before if");
+            if(userRepository.findByTwitterId(twitter.getId()).isEmpty()){
                 userRepository.save(new User(twitter.getScreenName(), twitter.getId(), twitter.showUser(twitter.getId()).get400x400ProfileImageURL()));
+                System.out.println("spremijo u bazu");
             }
+            System.out.println("after if");
             HttpHeaders header = new HttpHeaders();
-            header.add(HttpHeaders.AUTHORIZATION, "Bearer " + twitter.getOAuthAccessToken(requestToken, oauthVerifier).getToken());
+            header.add(HttpHeaders.AUTHORIZATION, "Bearer " + token.getToken());
+            System.out.println(twitter.getId() + " " + twitter.getScreenName());
+            request.getSession().setAttribute("screenname", twitter.getScreenName());
             response.addCookie(new Cookie("username", twitter.getScreenName()));
             response.addCookie(new Cookie("userId", Long.toString(twitter.getId())));
 
