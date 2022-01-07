@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/base :: layout(~{::title}, ~{::#page})}">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Lab1</title>
+</head>
+<body>
+<div id="page">
+    <div th:each="movie:${movies}" class="px-4 py-3">
+        <div class="flex">
+            <div class="mr-3">
+                <img th:src="${movie.poster}" alt="">
+                <p th:text="'Prosječna ocjena: ' + ${movie.imdbRating}"></p>
+                <p th:text="'Godina izlaska: ' + ${movie.year}"></p>
+            </div>
+            <div>
+                <h1 th:text="${movie.title}" class="mb-3 text-2xl"></h1>
+                <p>Status:</p>
+                <form action="/movieDetails" method="post">
+                    <select name="status" id="status" onchange="this.form.submit()">
+                        <option value="0">Add to watchlish</option>
+                        <option value="1">Watched</option>
+                    </select>
+                </form>
+
+                </select>
+                <th:block th:utext="${movie.plot}"></th:block>
+            </div>
+        </div>
+        <hr>
+    </div>
+</div>
+</body>
+</html>
