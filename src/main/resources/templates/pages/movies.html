@@ -7,6 +7,17 @@
 </head>
 <body>
 <div id="page">
+    <div class="w-10/12 mb-2 mt-2">
+        <div id="image-slider" class="splide">
+            <div class="splide__track">
+                <ul class="splide__list">
+                    <li th:each="movie: ${topMovies}" class="splide__slide">
+                        <img th:src="${movie.poster}" alt="Movie poster" class="w-full h-fit">
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
     <div th:each="movie:${movies}" class="px-4 py-3">
         <div class="grid grid-cols-3">
             <div class="mr-3">
@@ -22,5 +33,10 @@
         <hr>
     </div>
 </div>
+
+<script>
+    const Splide = require("@splidejs/splide");
+    new Splide('#image-slider').mount();
+</script>
 </body>
 </html>

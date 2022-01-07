@@ -1,5 +1,7 @@
 package com.labos.lab1.movie;
 
+import java.util.List;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import net.minidev.json.parser.ParseException;
 import org.springframework.stereotype.Controller;
@@ -25,7 +27,9 @@ public class MovieController {
     if (movieService.collectionSize() == 0){
       fetchMovies();
     }
-    model.addAttribute("movies", movieService.getAll());
+    List<Movie> movies = movieService.getAll();
+    model.addAttribute("movies", movies);
+    model.addAttribute("topMovies", movies.subList(0, 10));
     return "pages/movies";
   }
 
