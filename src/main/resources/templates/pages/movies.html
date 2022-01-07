@@ -1,42 +1,64 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/base :: layout(~{::title}, ~{::#page})}">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Lab1</title>
 </head>
-<body>
-<div id="page">
-    <div class="w-10/12 mb-2 mt-2">
-        <div id="image-slider" class="splide">
-            <div class="splide__track">
-                <ul class="splide__list">
-                    <li th:each="movie: ${topMovies}" class="splide__slide">
-                        <img th:src="${movie.poster}" alt="Movie poster" class="w-full h-fit">
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div th:each="movie:${movies}" class="px-4 py-3">
-        <div class="grid grid-cols-3">
-            <div class="mr-3">
-                <img class="h-96 w-80 object-contain" th:src="${movie.poster}" alt="Movie poster">
-                <p th:text="'Prosječna ocjena: ' + ${movie.imdbRating} + '/10'"></p>
-                <p th:text="'Actors: ' + ${movie.actors}"></p>
-            </div>
-            <div class="col-span-2">
-                <p th:text="${movie.title}" class="mb-3 text-2xl"></p>
-                <p th:utext="${movie.plot}"></p>
-            </div>
-        </div>
-        <hr>
-    </div>
-</div>
 
-<script>
-    const Splide = require("@splidejs/splide");
-    new Splide('#image-slider').mount();
-</script>
+<body>
+    <div id="page">
+        <div>
+            <p class="text-2xl font-bold mt-24">10 Najbolje ocijenjenih filmova</p>
+        </div>
+        <div class="w-full h-[30vh] mt-3 mb-24">
+            <div class="swiper mySwiper w-full h-full">
+                <div class="swiper-wrapper">
+                    <div th:each="movie:${topMovies}" class="swiper-slide flex text-center items-center justify-center">
+                        <img th:src="${movie.poster}" alt="Movie poster" class="w-full h-fit object-cover">
+                    </div>
+                </div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+        <div th:each="movie:${movies}" class="px-4 py-3">
+            <div class="grid grid-cols-3">
+                <div class="mr-3">
+                    <img class="h-96 w-80 object-contain" th:src="${movie.poster}" alt="Movie poster">
+                    <p th:text="'Prosječna ocjena: ' + ${movie.imdbRating} + '/10'"></p>
+                    <p th:text="'Actors: ' + ${movie.actors}"></p>
+                </div>
+                <div class="col-span-2">
+                    <p th:text="${movie.title}" class="mb-3 text-2xl"></p>
+                    <p th:utext="${movie.plot}"></p>
+                </div>
+            </div>
+            <hr>
+        </div>
+        <!-- Swiper JS -->
+        <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+        <!-- Initialize Swiper -->
+        <script>
+            var swiper = new Swiper(".mySwiper", {
+                slidesPerView: 3,
+                spaceBetween: 30,
+                slidesPerGroup: 1,
+                loop: true,
+                loopFillGroupWithBlank: true,
+                pagination: {
+                    el: ".swiper-pagination",
+                    clickable: true
+                },
+                navigation: {
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev"
+                }
+            });
+        </script>
+    </div>
 </body>
 </html>

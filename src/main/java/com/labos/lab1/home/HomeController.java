@@ -59,11 +59,16 @@ public class HomeController {
     JSONArray resultsUpcoming = jsonUpcoming.getJSONArray("results");
     for (int i = 0; i < noOfItems; i++){
       String imdbIdPopular = getImdbId(String.valueOf(resultsPopular.getJSONObject(i).getInt("id")));
+      Movie popularMovie = getMovieById(imdbIdPopular);
+      if (popularMovie != null) popularMovies.add(popularMovie);
+
       String imdbIdTopRated = getImdbId(String.valueOf(resultsTopRated.getJSONObject(i).getInt("id")));
+      Movie topRatedMovie = getMovieById(imdbIdTopRated);
+      if (topRatedMovie != null) topRatedMovies.add(topRatedMovie);
+
       String imdbIdUpcoming = getImdbId(String.valueOf(resultsUpcoming.getJSONObject(i).getInt("id")));
-      popularMovies.add(getMovieById(imdbIdPopular));
-      topRatedMovies.add(getMovieById(imdbIdTopRated));
-      upcomingMovies.add(getMovieById(imdbIdUpcoming));
+      Movie upcomingMovie = getMovieById(imdbIdUpcoming);
+      if (upcomingMovie != null) upcomingMovies.add(upcomingMovie);
     }
   }
 
@@ -77,13 +82,15 @@ public class HomeController {
   }
 
   private Movie getMovieById(String imdbId) throws UnirestException {
-
     HttpResponse<String> response = Unirest.get("http://www.omdbapi.com/?apikey=" + omdbApiKey + "&i=" + imdbId)
             .asString();
-    JSONObject jsonObject = new JSONObject(response.getBody());
-    Movie movie = new Movie();
-    movie.setMovieParams(jsonObject);
 
-    return movie;
+    if (response.getStatus() == 200){
+      JSONObject jsonObject = new JSONObject(response.getBody());
+      Movie movie = new Movie();
+      movie.setMovieParams(jsonObject);
+      return movie;
+    }
+    return null;
   }
 }
