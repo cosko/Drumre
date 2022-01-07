@@ -1,6 +1,5 @@
 package com.labos.lab1.home;
 
-import com.google.gson.Gson;
 import com.labos.lab1.movie.Movie;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;

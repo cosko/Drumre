@@ -10,13 +10,14 @@
     <div th:each="movie:${movies}" class="px-4 py-3">
         <div class="flex">
             <div class="mr-3">
-                <img th:src="${movie.image.original}" alt="">
-                <p th:text="'Prosječna ocjena: ' + ${movie.rating.average} + '/10'"></p>
-                <p th:text="'Premijera: ' + ${movie.premiered}"></p>
+                <img th:src="${movie.poster}" alt="">
+                <p th:text="'Prosječna ocjena: ' + ${movie.imdbRating}"></p>
+                <p th:text="'Godina izlaska: ' + ${movie.year}"></p>
             </div>
             <div>
-                <p th:text="${movie.name}" class="mb-3 text-2xl"></p>
-                <th:block th:utext="${movie.summary}"></th:block>
+                <p th:text="${movie.title}" class="mb-3 text-2xl"></p>
+                <a th:href="@{/movieDetails/{title}(title=${movie.title})}" style="color: cornflowerblue; text-decoration: underline;"> Details </a> <br>
+                <th:block th:utext="${movie.plot}"></th:block>
             </div>
         </div>
         <hr>
