@@ -7,7 +7,6 @@ import com.labos.lab1.movie.Movie;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.security.access.method.P;
 
 @Document("users")
 public class User {
@@ -16,7 +15,9 @@ public class User {
   private String id;
   private String username;
   private Long twitterId;
-  private Map<Movie, Integer> watched;
+  private Map<String, Integer> watched;
+  private Map<String, Integer> actors;
+  private Map<String, Integer> genres;
   private List<Movie> recommended;
   private String firstName;
   private String lastName;
@@ -42,6 +43,22 @@ public class User {
   public User() {
   }
 
+  public Map<String, Integer> getActors() {
+    return actors;
+  }
+
+  public void setActors(Map<String, Integer> actors) {
+    this.actors = actors;
+  }
+
+  public Map<String, Integer> getGenres() {
+    return genres;
+  }
+
+  public void setGenres(Map<String, Integer> genres) {
+    this.genres = genres;
+  }
+
   public Long getTwitterId() {
     return twitterId;
   }
@@ -58,11 +75,11 @@ public class User {
     this.username = username;
   }
 
-  public Map<Movie, Integer> getWatched() {
+  public Map<String, Integer> getWatched() {
     return watched;
   }
 
-  public void setWatched(Map<Movie, Integer> watched) {
+  public void setWatched(Map<String, Integer> watched) {
     this.watched = watched;
   }
 
