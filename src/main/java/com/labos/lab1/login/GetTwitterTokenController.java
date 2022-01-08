@@ -2,17 +2,17 @@ package com.labos.lab1.login;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
-
+import org.springframework.web.servlet.view.RedirectView;
 import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
-import twitter4j.auth.OAuth2Token;
 import twitter4j.auth.RequestToken;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
@@ -20,58 +20,50 @@ import twitter4j.conf.ConfigurationBuilder;
 @Controller
 public class GetTwitterTokenController {
 
-    @Autowired
+	private static final Logger LOGGER = LoggerFactory.getLogger(GetTwitterTokenController.class);
+	@Autowired
     private Environment env;
-		
-    @CrossOrigin("https://api.twitter.com")
-    @RequestMapping("/getTwitterToken")
-    public ModelAndView getTwitterToken(HttpServletRequest request, Model model) {
-    	//this will be the URL that we take the user to
-    	String twitterUrl = "";
-    	
-		try {
-			//get the Twitter object
-			Twitter twitter = getTwitter();
-			
-			//get the callback url so they get back here
-			String callbackUrl = "http://localhost:8080/twitterCallback";
-			
 
-			//go get the request token from Twitter
+	@GetMapping("/getToken")
+	public RedirectView getToken(HttpServletRequest request, Model model) {
+		String twitterUrl = "http://localhost:8080/";
+
+		try {
+			Twitter twitter = getTwitter();
+			String callbackUrl = "http://localhost:8080/twitterCallback";
 			RequestToken requestToken = twitter.getOAuthRequestToken(callbackUrl);
-			System.out.println("got request token");
-			//put the token in the session because we'll need it later
+
 			request.getSession().setAttribute("requestToken", requestToken);
-			System.out.println("set request token");
-			//let's put Twitter in the session as well
 			request.getSession().setAttribute("twitter", twitter);
-			System.out.println("set twitter");
-			//now get the authorization URL from the token
+
 			twitterUrl = requestToken.getAuthorizationURL();
-			
+
+			LOGGER.info("Authorization url is " + twitterUrl);
 		} catch (Exception e) {
-            System.out.println(e.getMessage());
+			LOGGER.error("Problem logging in with Twitter!", e);
 		}
-    	
+
 		//redirect to the Twitter URL
-        return new ModelAndView("redirect:" + twitterUrl);
-    }
+		RedirectView redirectView = new RedirectView();
+		redirectView.setUrl(twitterUrl);
+		return redirectView;
+	}
     
 	public Twitter getTwitter() {
 		Twitter twitter  = null;
-        //System.out.println("setting consumer key and secret");
-        String consumerKey = env.getProperty("twitterAPIKey");
-		String consumerSecret=env.getProperty("twitterAPIKeySecret");
+
+        String consumerKey = env.getProperty("twitter.api.key");
+		String consumerSecret = env.getProperty("twitter.api.secret");
+		String accessToken = env.getProperty("twitter.access.token");
+		String accessSecret = env.getProperty("twitter.access.secret");
         
 		ConfigurationBuilder builder = new ConfigurationBuilder();
 		builder.setOAuthConsumerKey(consumerKey);
 		builder.setOAuthConsumerSecret(consumerSecret);
 		Configuration configuration = builder.build();
 
-		System.out.println("configuration done");
 		TwitterFactory factory = new TwitterFactory(configuration);
 		twitter = factory.getInstance();
-		System.out.println("instancing done");
 
 		return twitter;
 	}

@@ -13,7 +13,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http.authorizeRequests().antMatchers("/assets/**", "/login**", "/", "/getTwitterToken", "/twitterCallback").permitAll();
+    http.authorizeRequests().antMatchers("/assets/**", "/login**", "/", "/getToken", "/twitterCallback").permitAll();
     http.authorizeRequests()
         .antMatchers("/login").permitAll().anyRequest().authenticated()
         .and()
