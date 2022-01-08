@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
+import twitter4j.auth.OAuth2Token;
 import twitter4j.auth.RequestToken;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
@@ -34,16 +35,17 @@ public class GetTwitterTokenController {
 			
 			//get the callback url so they get back here
 			String callbackUrl = "http://localhost:8080/twitterCallback";
+			
 
 			//go get the request token from Twitter
 			RequestToken requestToken = twitter.getOAuthRequestToken(callbackUrl);
-			
+			System.out.println("got request token");
 			//put the token in the session because we'll need it later
 			request.getSession().setAttribute("requestToken", requestToken);
-			
+			System.out.println("set request token");
 			//let's put Twitter in the session as well
 			request.getSession().setAttribute("twitter", twitter);
-			
+			System.out.println("set twitter");
 			//now get the authorization URL from the token
 			twitterUrl = requestToken.getAuthorizationURL();
 			
@@ -57,20 +59,19 @@ public class GetTwitterTokenController {
     
 	public Twitter getTwitter() {
 		Twitter twitter  = null;
-
-        System.out.println("setting consumer key and secret");
+        //System.out.println("setting consumer key and secret");
         String consumerKey = env.getProperty("twitterAPIKey");
 		String consumerSecret=env.getProperty("twitterAPIKeySecret");
-        //String oauthToken=env.getProperty("twitteroauthToken");
-        //String oauthTokenKey=env.getProperty("twitteroauthTokenKey");
         
 		ConfigurationBuilder builder = new ConfigurationBuilder();
 		builder.setOAuthConsumerKey(consumerKey);
 		builder.setOAuthConsumerSecret(consumerSecret);
-        Configuration configuration = builder.build();
+		Configuration configuration = builder.build();
 
+		System.out.println("configuration done");
 		TwitterFactory factory = new TwitterFactory(configuration);
 		twitter = factory.getInstance();
+		System.out.println("instancing done");
 
 		return twitter;
 	}
