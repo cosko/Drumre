@@ -11,6 +11,7 @@ import com.labos.lab1.movie.MovieRepository;
 import com.labos.lab1.user.User;
 import com.labos.lab1.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
@@ -31,9 +32,16 @@ public class movieDetailsController {
     UserRepository userRepository;
     
     @GetMapping("/movieDetails/{title}")
-    public String movieDetails(Model model, @PathVariable("title") String title, @AuthenticationPrincipal OAuth2User user, HttpServletRequest request){
+    public String movieDetails(Authentication auth, Model model, @PathVariable("title") String title, @AuthenticationPrincipal OAuth2User user, HttpServletRequest request){
+        User currentUser;
+        if(user == null){
+            currentUser = ((User)auth.getPrincipal());
+            currentUser = userRepository.findByTwitterId(currentUser.getTwitterId()).get();
+        }
+        else{
+            currentUser = userRepository.findByEmail(user.getAttribute("email")).get();
+        }
         
-        System.out.println("in get");
         if(title == "" || title == null){
             return "index";
         }
@@ -46,13 +54,13 @@ public class movieDetailsController {
         else{
             model.addAttribute("movie", movie.get());
             request.getSession().setAttribute("movie", movie.get().getTitle());;
-            if (userRepository.findByEmail(user.getAttribute("email")).get().getWatched() == null){
+            if (currentUser.getWatched() == null){
                 model.addAttribute("autoselect", 0);
                 return "pages/movieDetails";
             }
-            if(userRepository.findByEmail(user.getAttribute("email")).get().getWatched().containsKey(movie.get().getTitle())){
+            if(currentUser.getWatched().containsKey(movie.get().getTitle())){
                 model.addAttribute("autoselect", 1);
-                model.addAttribute("rating", userRepository.findByEmail(user.getAttribute("email")).get().getWatched().get(movie.get().getTitle()));
+                model.addAttribute("rating", currentUser.getWatched().get(movie.get().getTitle()));
             }
             else{
                 model.addAttribute("autoselect", 0);
@@ -62,8 +70,16 @@ public class movieDetailsController {
     }
 
     @PostMapping("/movieDetails")
-    public ModelAndView updateUser(Model model, @RequestParam("watched-status") Integer updateUser, @AuthenticationPrincipal OAuth2User user, HttpServletRequest request){
-        User userObject = userRepository.findByEmail(user.getAttribute("email")).get();
+    public ModelAndView updateUser(Authentication auth, Model model, @RequestParam("watched-status") Integer updateUser, @AuthenticationPrincipal OAuth2User user, HttpServletRequest request){
+        User userObject;
+        if(user == null){
+            userObject = ((User)auth.getPrincipal());
+            userObject = userRepository.findByTwitterId(userObject.getTwitterId()).get();
+        }
+        else{
+            userObject = userRepository.findByEmail(user.getAttribute("email")).get();
+        }
+
         String title = (String)request.getSession().getAttribute("movie");
         System.out.println(updateUser);
         if(updateUser == 0){
@@ -134,8 +150,16 @@ public class movieDetailsController {
     }
 
     @PostMapping("/updateRating")
-    public ModelAndView updateRating(Model model, @RequestParam("rating") Integer rating, @AuthenticationPrincipal OAuth2User user, HttpServletRequest request){
-        User userObject = userRepository.findByEmail(user.getAttribute("email")).get();
+    public ModelAndView updateRating(Authentication auth, Model model, @RequestParam("rating") Integer rating, @AuthenticationPrincipal OAuth2User user, HttpServletRequest request){
+        User userObject;
+        if(user == null){
+            userObject = ((User)auth.getPrincipal());
+            userObject = userRepository.findByTwitterId(userObject.getTwitterId()).get();
+        }
+        else{
+            userObject = userRepository.findByEmail(user.getAttribute("email")).get();
+        }
+        
         String title = (String)request.getSession().getAttribute("movie");
         userObject.getWatched().put(title, rating);
         userRepository.save(userObject);
