@@ -21,9 +21,15 @@ public class MovieService {
     movieRepository.save(movie);
   }
 
+  public void saveMovie(Movie movie){
+    movieRepository.save(movie);
+  }
+
   public List<Movie> getAll(){
     return movieRepository.findAll();
   }
+
+  public Movie getByUniqueId(String uniqueId){ return movieRepository.findByUniqueId(uniqueId); }
 
   public long collectionSize(){
     return movieRepository.count();
