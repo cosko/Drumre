@@ -16,6 +16,7 @@
             </div>
             <div class="col-span-2">
                 <p th:text="${movie.title}" class="mb-3 text-2xl"></p>
+                <a th:href="@{/movieDetails/{title}(title=${movie.title})}" style="color: cornflowerblue; text-decoration: underline;"> Details </a> <br>
                 <p th:utext="${movie.plot}"></p>
             </div>
         </div>
