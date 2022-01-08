@@ -17,7 +17,7 @@
                     <div class="float-left">
                         <form action="#" th:action="@{/movieDetails/}" method="post">
                             <label for="status">Status:</label>
-                            <select title="Status" name="watched-status" id="status" onchange="this.form.submit()" th.field="{updateUser}">
+                            <select title="Status" name="watched-status" id="status" onchange="this.form.submit()">
                                 <option th:value="${0}" th:selected="${autoselect==0}">Not watched</option>
                                 <option th:value="${1}" th:selected="${autoselect==1}">Watched</option>
                             </select>
@@ -26,7 +26,7 @@
                     <div class="float-right">
                         <form th:style="${autoselect == 1 ? '' : 'display:none'}" action="#" th:action="@{/updateRating}" method="post">
                             <label for="rating">Rating:</label>
-                            <select title="Rating" name="rating" id="rating">
+                            <select title="Rating" name="rating" id="rating" onchange="this.form.submit()">
                                 <option value="1" th:selected="${rating == 1}">1</option>
                                 <option value="2" th:selected="${rating == 2}">2</option>
                                 <option value="3" th:selected="${rating == 3}">3</option>
