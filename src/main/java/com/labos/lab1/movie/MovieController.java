@@ -1,5 +1,7 @@
 package com.labos.lab1.movie;
 
+import java.util.List;
+
 import java.util.ArrayList;
 import java.util.function.Consumer;
 
@@ -44,6 +46,10 @@ public class MovieController {
     if (movieService.collectionSize() == 0){
       fetchMovies();
     }
+    List<Movie> exampleMovies = movieService.getAll();
+    model.addAttribute("movies", exampleMovies);
+    model.addAttribute("topMovies", exampleMovies.subList(0, 10));
+    model.addAttribute("popularMovies", exampleMovies.subList(20, 30));
     ArrayList<Movie> movies = new ArrayList<Movie>();
     int i = 0;
     for(Movie movie : movieRepository.findAll()){
