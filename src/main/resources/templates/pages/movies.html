@@ -8,16 +8,16 @@
 <body>
 <div id="page">
     <div th:each="movie:${movies}" class="px-4 py-3">
-        <div class="flex">
+        <div class="grid grid-cols-3">
             <div class="mr-3">
-                <img th:src="${movie.poster}" alt="">
-                <p th:text="'Prosječna ocjena: ' + ${movie.imdbRating}"></p>
-                <p th:text="'Godina izlaska: ' + ${movie.year}"></p>
+                <img class="h-96 w-80 object-contain" th:src="${movie.poster}" alt="Movie poster">
+                <p th:text="'Prosječna ocjena: ' + ${movie.imdbRating} + '/10'"></p>
+                <p th:text="'Actors: ' + ${movie.actors}"></p>
             </div>
-            <div>
+            <div class="col-span-2">
                 <p th:text="${movie.title}" class="mb-3 text-2xl"></p>
                 <a th:href="@{/movieDetails/{title}(title=${movie.title})}" style="color: cornflowerblue; text-decoration: underline;"> Details </a> <br>
-                <th:block th:utext="${movie.plot}"></th:block>
+                <p th:utext="${movie.plot}"></p>
             </div>
         </div>
         <hr>

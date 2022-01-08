@@ -36,7 +36,6 @@ public class HomeController {
 
     fetchDefaultMovies();
     model.addAttribute("popularMovies", popularMovies);
-    System.out.println(popularMovies);
     model.addAttribute("topRatedMovies", topRatedMovies);
     model.addAttribute("upcomingMovies", upcomingMovies);
     return "index";
