@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 </head>
 <body>
@@ -8,8 +8,10 @@
             <div class="splide__track">
                 <ul class="splide__list">
                     <li th:each="movie:${movieList}" class="splide__slide">
-                        <img alt="Movie poster" class="w-full h-[30vh] object-contain cursor-pointer"
-                             th:src="${movie.poster}" th:title="${movie.title}">
+                        <a th:href="@{/movieDetails/{title} (title = ${movie.title}) }">
+                            <img alt="Movie poster" class="w-full h-[30vh] object-contain cursor-pointer"
+                                 th:src="${movie.poster}" th:title="${movie.title}">
+                        </a>
                     </li>
                 </ul>
             </div>
