@@ -15,6 +15,7 @@ public class Movie {
   private String plot;
   private String poster;
   private String imdbRating;
+  private String uniqueId;
 
   public void setMovieParams(JSONObject jsonObject){
     this.setTitle(jsonObject.getString("Title"));
@@ -26,6 +27,14 @@ public class Movie {
     this.setPlot(jsonObject.getString("Plot"));
     this.setPoster(jsonObject.getString("Poster"));
     this.setImdbRating(jsonObject.getString("imdbRating"));
+  }
+
+  public String getUniqueId() {
+    return uniqueId;
+  }
+
+  public void setUniqueId(String uniqueId) {
+    this.uniqueId = uniqueId;
   }
 
   public String getTitle() {
@@ -112,6 +121,7 @@ public class Movie {
             ", plot='" + plot + '\'' +
             ", poster='" + poster + '\'' +
             ", imdbRating='" + imdbRating + '\'' +
+            ", uniqueId='" + uniqueId + '\'' +
             '}';
   }
 }

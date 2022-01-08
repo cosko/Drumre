@@ -1,12 +1,16 @@
 package com.labos.lab1.home;
 
 import com.labos.lab1.movie.Movie;
+import com.labos.lab1.movie.MovieRepository;
+import com.labos.lab1.movie.MovieService;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.config.web.servlet.oauth2.resourceserver.OAuth2ResourceServerSecurityMarker;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,11 +23,20 @@ import java.util.List;
 @Controller
 public class HomeController {
 
+  public enum MovieProperty {
+    POPULAR,
+    TOP_RATED,
+    UPCOMING
+  }
+
   @Value("${tmdb-api-key}")
   private String tmdbApiKey;
 
   @Value("${omdb-api-key}")
   private String omdbApiKey;
+
+  @Autowired
+  private MovieRepository movieRepository;
 
   private final Integer noOfItems = 15;
 
@@ -57,18 +70,26 @@ public class HomeController {
     JSONObject jsonUpcoming = new JSONObject(responseUpcoming.getBody());
     JSONArray resultsUpcoming = jsonUpcoming.getJSONArray("results");
     for (int i = 0; i < noOfItems; i++){
-      String imdbIdPopular = getImdbId(String.valueOf(resultsPopular.getJSONObject(i).getInt("id")));
-      Movie popularMovie = getMovieById(imdbIdPopular);
-      if (popularMovie != null) popularMovies.add(popularMovie);
 
-      String imdbIdTopRated = getImdbId(String.valueOf(resultsTopRated.getJSONObject(i).getInt("id")));
-      Movie topRatedMovie = getMovieById(imdbIdTopRated);
-      if (topRatedMovie != null) topRatedMovies.add(topRatedMovie);
-
-      String imdbIdUpcoming = getImdbId(String.valueOf(resultsUpcoming.getJSONObject(i).getInt("id")));
-      Movie upcomingMovie = getMovieById(imdbIdUpcoming);
-      if (upcomingMovie != null) upcomingMovies.add(upcomingMovie);
+      String uniqueIdPopular = String.valueOf(resultsPopular.getJSONObject(i).getInt("id"));
+      String uniqueIdTopRated = String.valueOf(resultsTopRated.getJSONObject(i).getInt("id"));
+      String uniqueIdUpcoming = String.valueOf(resultsUpcoming.getJSONObject(i).getInt("id"));
+      findOrSaveMovie(uniqueIdPopular, MovieProperty.POPULAR);
+      findOrSaveMovie(uniqueIdTopRated, MovieProperty.TOP_RATED);
+      findOrSaveMovie(uniqueIdUpcoming, MovieProperty.UPCOMING);
     }
+  }
+
+  private void findOrSaveMovie(String uniqueId, MovieProperty movieProperty) throws UnirestException {
+    Movie movie = movieRepository.findByUniqueId(uniqueId);
+    if (movie == null){
+      movie = getMovieById(getImdbId(uniqueId));
+      movie.setUniqueId(uniqueId);
+      movieRepository.save(movie);
+    }
+    if (movieProperty == MovieProperty.POPULAR) popularMovies.add(movie);
+    else if (movieProperty == MovieProperty.TOP_RATED) topRatedMovies.add(movie);
+    else if (movieProperty == MovieProperty.UPCOMING) upcomingMovies.add(movie);
   }
 
   private String getImdbId(String tmdbId) throws UnirestException {

@@ -77,6 +77,7 @@ public class MovieController {
       HttpResponse<String> response = Unirest.get("http://www.omdbapi.com/?apikey=" + omdbApiKey + "&i=" + imdbId).asString();
       JSONObject movieJson = new JSONObject(response.getBody());
       Movie movie = new Movie();
+      movie.setUniqueId(String.valueOf(i));
       movie.setMovieParams(movieJson);
       movieRepository.save(movie);
       } catch(Exception e){

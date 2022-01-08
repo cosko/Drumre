@@ -95,52 +95,23 @@
 </head>
 <body>
 <div id="page">
-    <h2>Top 15 currently popular movies</h2>
-    <div th:each="movie:${popularMovies}" class="px-4 py-3">
-        <div class="flex">
-            <div class="mr-3">
-                <img th:src="${movie.poster}" alt="">
-                <p th:text="'Prosječna ocjena: ' + ${movie.imdbRating} + '/10'"></p>
-                <p th:text="'Actors: ' + ${movie.actors}"></p>
-            </div>
-            <div>
-                <p th:text="${movie.title}" class="mb-3 text-2xl"></p>
-                <th:block th:utext="${movie.plot}"></th:block>
-            </div>
-        </div>
-        <hr>
+    <div class="mt-12">
+        <p class="text-2xl font-bold">15 trenutno najpopularnijih filmova</p>
     </div>
-    <br>
-    <h2>15 top rated movies</h2>
-    <div th:each="movie:${topRatedMovies}" class="px-4 py-3">
-        <div class="flex">
-            <div class="mr-3">
-                <img th:src="${movie.poster}" alt="">
-                <p th:text="'Prosječna ocjena: ' + ${movie.imdbRating} + '/10'"></p>
-                <p th:text="'Actors: ' + ${movie.actors}"></p>
-            </div>
-            <div>
-                <p th:text="${movie.title}" class="mb-3 text-2xl"></p>
-                <th:block th:utext="${movie.plot}"></th:block>
-            </div>
-        </div>
-        <hr>
+    <div class="w-full mt-3">
+        <div th:replace="fragments/splide :: splide(${popularMovies})"></div>
     </div>
-    <br>
-    <h2>15 most anticipated movies</h2>
-    <div th:each="movie:${upcomingMovies}" class="px-4 py-3">
-        <div class="flex">
-            <div class="mr-3">
-                <img th:src="${movie.poster}" alt="">
-                <p th:text="'Prosječna ocjena: ' + ${movie.imdbRating} + '/10'"></p>
-                <p th:text="'Actors: ' + ${movie.actors}"></p>
-            </div>
-            <div>
-                <p th:text="${movie.title}" class="mb-3 text-2xl"></p>
-                <th:block th:utext="${movie.plot}"></th:block>
-            </div>
-        </div>
-        <hr>
+    <div class="mt-12">
+        <p class="text-2xl font-bold">15 najbolje ocjenjenih filmova</p>
+    </div>
+    <div class="w-full mt-3 mb-24">
+        <div th:replace="fragments/splide :: splide(${topRatedMovies})"></div>
+    </div>
+    <div class="mt-12">
+        <p class="text-2xl font-bold">15 najiščekivanijih filmova</p>
+    </div>
+    <div class="w-full mt-3 mb-24">
+        <div th:replace="fragments/splide :: splide(${upcomingMovies})"></div>
     </div>
 </div>
 </body>
