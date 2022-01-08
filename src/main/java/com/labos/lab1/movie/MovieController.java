@@ -30,6 +30,7 @@ public class MovieController {
     List<Movie> movies = movieService.getAll();
     model.addAttribute("movies", movies);
     model.addAttribute("topMovies", movies.subList(0, 10));
+    model.addAttribute("popularMovies", movies.subList(20, 30));
     return "pages/movies";
   }
 
