@@ -2,54 +2,46 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/base :: layout(~{::title}, ~{::#page})}">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html" />
     <title>Lab1</title>
 </head>
 <body>
     <div id="page">       
-        <div>
-            <form action="#" th:action="@{/movies}" method="post">
-                <table class="border-blue-100 bg-blue-100">
-                    <tr>
-                        <td>
-                            Find a movie:
-                        </td>
-                        <td class="border-1 border-gray-300">
-                            <input type="text" name="search" id="search" th:value="${previousInput}">
-                        </td>
-                        <td class="hover:bg-slate-300">
-                            <button type="submit">Search</button>
-                        </td>
-                    </tr>
-                </table>
+        <div class="w-full px-3 py-2 mb-6 mt-24">
+            <form th:action="@{/movies}" th:object="${movieFilter}" method="post">
+                <div class="flex justify-center items-center">
+                    <div class="mr-3 w-40">
+                        <label for="title" class="block text-sm font-medium text-gray-700">Naslov</label>
+                        <input type="text" name="title" th:value="${movieFilter.title}" id="title"
+                               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3
+                               focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    </div>
+                    <div class="mr-3 w-40">
+                        <label for="genre" class="block text-sm font-medium text-gray-700">Žanr</label>
+                        <input type="text" name="genre" th:value="${movieFilter.genre}" id="genre"
+                               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3
+                               focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    </div>
+                    <div class="mr-3 w-40">
+                        <label for="actors" class="block text-sm font-medium text-gray-700">Glumac</label>
+                        <input type="text" name="actors" th:value="${movieFilter.actors}" id="actors"
+                               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3
+                               focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    </div>
+                    <div class="flex items-end">
+                        <button type="submit" class="px-3 py-1 bg-green-400 hover:bg-green-500 rounded">Filtriraj</button>
+                    </div>
+                </div>
             </form>
         </div>
-        <div class="mt-12">
-            <p class="text-2xl font-bold">10 Najbolje ocijenjenih filmova</p>
-        </div>
-        <div class="w-full mt-3">
-            <div th:replace="fragments/splide :: splide(${topMovies})"></div>
-        </div>
-        <div class="mt-12">
-            <p class="text-2xl font-bold">10 popularnih filmova</p>
-        </div>
-        <div class="w-full mt-3 mb-24">
-            <div th:replace="fragments/splide :: splide(${popularMovies})"></div>
-        </div>
-        <div th:each="movie:${movies}" class="px-4 py-3">
-            <div class="grid grid-cols-3">
-                <div class="mr-3">
-                    <img class="h-96 w-80 object-contain" th:src="${movie.poster}" alt="Movie poster">
-                    <p th:text="'Prosječna ocjena: ' + ${movie.imdbRating} + '/10'"></p>
-                    <p th:text="'Actors: ' + ${movie.actors}"></p>
-                </div>
-                <div class="col-span-2">
-                    <p th:text="${movie.title}" class="mb-3 text-2xl"></p>
-                    <a th:href="@{/movieDetails/{title}(title=${movie.title})}" class="underline text-sky-500">Details</a><br>
-                    <p th:utext="${movie.plot}"></p>
-                </div>
+        <div class="flex flex-wrap items-center justify-around">
+            <a th:each="movie:${movies}" th:href="@{/movieDetails/{id}(title=${movie.uniqueId})}">
+                <img th:if="${movies} != null" class="h-96 w-80 object-contain hover:cursor-pointer hover:object-scale-down px-3 py-2 " alt="Movie poster"
+                     th:src="${movie.poster}" th:title="${movie.title}">
+            </a>
+            <div th:unless="${movies} != null">
+                <p>Nije pronađen niti jedan film s tim parametrima</p>
             </div>
-            <hr>
         </div>
     </div>
 </body>

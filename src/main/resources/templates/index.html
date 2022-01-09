@@ -95,23 +95,25 @@
 </head>
 <body>
 <div id="page">
-    <div class="mt-12">
-        <p class="text-2xl font-bold">15 trenutno najpopularnijih filmova</p>
-    </div>
-    <div class="w-full mt-3">
-        <div th:replace="fragments/splide :: splide(${popularMovies})"></div>
-    </div>
-    <div class="mt-12">
-        <p class="text-2xl font-bold">15 najbolje ocjenjenih filmova</p>
-    </div>
-    <div class="w-full mt-3 mb-24">
-        <div th:replace="fragments/splide :: splide(${topRatedMovies})"></div>
-    </div>
-    <div class="mt-12">
-        <p class="text-2xl font-bold">15 najiščekivanijih filmova</p>
-    </div>
-    <div class="w-full mt-3 mb-24">
-        <div th:replace="fragments/splide :: splide(${upcomingMovies})"></div>
+    <div class="max-w-5xl mx-auto mt-3">
+        <div class="mt-12">
+            <p class="text-2xl font-bold">15 trenutno najpopularnijih filmova</p>
+        </div>
+        <div class="w-full mt-3">
+            <div th:replace="fragments/splide :: splide(${popularMovies})"></div>
+        </div>
+        <div class="mt-12">
+            <p class="text-2xl font-bold">15 najbolje ocjenjenih filmova</p>
+        </div>
+        <div class="w-full mt-3 mb-24">
+            <div th:replace="fragments/splide :: splide(${topRatedMovies})"></div>
+        </div>
+        <div class="mt-12">
+            <p class="text-2xl font-bold">15 najiščekivanijih filmova</p>
+        </div>
+        <div class="w-full mt-3 mb-24">
+            <div th:replace="fragments/splide :: splide(${upcomingMovies})"></div>
+        </div>
     </div>
 </div>
 </body>

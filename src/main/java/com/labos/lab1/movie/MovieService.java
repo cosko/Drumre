@@ -4,15 +4,21 @@ import java.util.List;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.Gson;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 @Service
 public class MovieService {
 
-  private MovieRepository movieRepository;
+  private final MovieRepository movieRepository;
+  private final MongoTemplate mongoTemplate;
 
-  public MovieService(MovieRepository movieRepository){
+  public MovieService(MovieRepository movieRepository,
+                      MongoTemplate mongoTemplate) {
     this.movieRepository = movieRepository;
+    this.mongoTemplate = mongoTemplate;
   }
 
   public void save(String data) throws JsonProcessingException {
@@ -33,5 +39,13 @@ public class MovieService {
 
   public long collectionSize(){
     return movieRepository.count();
+  }
+
+  public List<Movie> findBestMovies() {
+    return movieRepository.findBestMovies();
+  }
+
+  public List<Movie> findFilteredMovies(MovieFilter filter) {
+    return movieRepository.findFiltered(filter.getTitle(), filter.getGenre(), filter.getActors());
   }
 }
