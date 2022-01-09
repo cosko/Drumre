@@ -10,42 +10,48 @@
     <div class="flex">
         <div class="mr-3">
             <img th:src="${movie.poster}" alt="">
-            <h1 th:text="${movie.title}" class="mb-3 text-2xl"></h1>
-            <p th:text="'Prosječna ocjena: ' + ${movie.imdbRating}"></p>
-            <p th:text="'Godina izlaska: ' + ${movie.year}"></p>
-            <div class="inline-block">
-                <div class="float-left">
-                    <form action="#" th:action="@{/movieDetails/}" method="post">
-                        <label for="status">Status:</label>
-                        <select title="Status" name="watched-status" id="status" onchange="this.form.submit()">
-                            <option th:value="${0}" th:selected="${autoselect==0}">Not watched</option>
-                            <option th:value="${1}" th:selected="${autoselect==1}">Watched</option>
-                        </select>
-                    </form>
-                </div>
-                <div class="float-right">
-                    <form th:style="${autoselect == 1 ? '' : 'display:none'}" action="#" th:action="@{/updateRating}" method="post">
-                        <label for="rating">Rating:</label>
-                        <select title="Rating" name="rating" id="rating" onchange="this.form.submit()">
-                            <option value="1" th:selected="${rating == 1}">1</option>
-                            <option value="2" th:selected="${rating == 2}">2</option>
-                            <option value="3" th:selected="${rating == 3}">3</option>
-                            <option value="4" th:selected="${rating == 4}">4</option>
-                            <option value="5" th:selected="${rating == 5}">5</option>
-                            <option value="6" th:selected="${rating == 6}">6</option>
-                            <option value="7" th:selected="${rating == 7}">7</option>
-                            <option value="8" th:selected="${rating == 8}">8</option>
-                            <option value="9" th:selected="${rating == 9}">9</option>
-                            <option value="10" th:selected="${rating == 10}">10</option>
-                        </select>
-                    </form>
-                </div>
+        </div>
+        <h1 th:text="${movie.title}" class="mb-3 text-2xl"></h1>
+        <br>
+        <p th:text="'Prosječna ocjena: ' + ${movie.imdbRating}"></p>
+        <br>
+        <p th:text="'Godina izlaska: ' + ${movie.year}"></p>
+        <br>
+        <div class="inline-block">
+            <div>
+            <div class="float-left">
+                <form action="#" th:action="@{/movieDetails/}" method="post">
+                    <label for="status">Status:</label>
+                    <select title="Status" name="watched-status" id="status" onchange="this.form.submit()">
+                        <option th:value="${0}" th:selected="${autoselect==0}">Not watched</option>
+                        <option th:value="${1}" th:selected="${autoselect==1}">Watched</option>
+                    </select>
+                </form>
             </div>
             <br>
+            <div class="float-left">
+                <form th:style="${autoselect == 1 ? '' : 'display:none'}" action="#" th:action="@{/updateRating}" method="post">
+                    <label for="rating">Rating:</label>
+                    <select title="Rating" name="rating" id="rating" onchange="this.form.submit()">
+                        <option value="1" th:selected="${rating == 1}">1</option>
+                        <option value="2" th:selected="${rating == 2}">2</option>
+                        <option value="3" th:selected="${rating == 3}">3</option>
+                        <option value="4" th:selected="${rating == 4}">4</option>
+                        <option value="5" th:selected="${rating == 5}">5</option>
+                        <option value="6" th:selected="${rating == 6}">6</option>
+                        <option value="7" th:selected="${rating == 7}">7</option>
+                        <option value="8" th:selected="${rating == 8}">8</option>
+                        <option value="9" th:selected="${rating == 9}">9</option>
+                        <option value="10" th:selected="${rating == 10}">10</option>
+                    </select>
+                </form>
+            </div>
+            </div>
         </div>
-        <div>
-            <p th:utext="${movie.plot}"></p>
-        </div>
+        <br>
+    </div>
+    <div>
+        <p th:utext="${movie.plot}"></p>
     </div>
 </div>
 </body>
