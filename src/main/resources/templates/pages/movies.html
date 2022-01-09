@@ -7,11 +7,21 @@
 </head>
 <body>
     <div id="page">       
-        <div class="border-2 border-gray-500">
+        <div>
             <form action="#" th:action="@{/movies}" method="post">
-                <label for="search">Find a movie:</label>
-                <input type="text" name="search" id="search">
-                <input type="submit">
+                <table class="border-blue-100 bg-blue-100">
+                    <tr>
+                        <td>
+                            Find a movie:
+                        </td>
+                        <td class="border-1 border-gray-300">
+                            <input type="text" name="search" id="search" th:value="${previousInput}">
+                        </td>
+                        <td class="hover:bg-slate-300">
+                            <button type="submit">Search</button>
+                        </td>
+                    </tr>
+                </table>
             </form>
         </div>
         <div class="mt-12">
