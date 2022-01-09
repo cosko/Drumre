@@ -56,6 +56,10 @@ public class HomeController {
 
   private void fetchDefaultMovies() throws UnirestException {
 
+    popularMovies = new ArrayList<>();
+    topRatedMovies = new ArrayList<>();
+    upcomingMovies = new ArrayList<>();
+
     HttpResponse<String> responsePopular = Unirest.get("https://api.themoviedb.org/3/movie/popular?api_key="
                     + tmdbApiKey).asString();
     HttpResponse<String> responseTopRated = Unirest.get("https://api.themoviedb.org/3/movie/top_rated?api_key="
