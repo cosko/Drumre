@@ -3,10 +3,10 @@ package com.labos.lab1.login;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import com.labos.lab1.user.User;
 import com.labos.lab1.user.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ResolvableType;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -78,25 +78,40 @@ public class LoginController {
       HttpHeaders headers = new HttpHeaders();
       headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + client.getAccessToken()
                                                                .getTokenValue());
-      HttpEntity entity = new HttpEntity("", headers);
+      HttpEntity<String> entity = new HttpEntity<>("", headers);
       ResponseEntity<Map>response = restTemplate
           .exchange(userInfoEndpointUri, HttpMethod.GET, entity, Map.class);
       Map userAttributes = response.getBody();
-      saveUser(response.getBody());
-      model.addAttribute("name", userAttributes.get("name"));
+
+      User user = mapBaseUser(userAttributes);
+      if(Objects.equals(authentication.getAuthorizedClientRegistrationId(), "facebook"))
+        setFacebookAttrs(user, userAttributes);
+
+      saveUser(user);
     }
     return "pages/loginSuccess";
 
   }
 
-  private void saveUser(Map<String, Serializable> data) {
-    User googleUser = new User((String) data.get("given_name"),
-                               (String) data.get("family_name"),
-                               (String) data.get("picture"),
-                               (String) data.get("email"),
-                               (Boolean) data.get("email_verified"));
-    if (!userService.exists(googleUser.getEmail()).isPresent()){
-      userService.saveUser(googleUser);
+  private User mapBaseUser(Map<String, Serializable> data) {
+      return new User((String) data.get("given_name"),
+          (String) data.get("family_name"),
+          (String) data.get("picture"),
+          (String) data.get("email"),
+          (Boolean) data.get("email_verified"));
+  }
+
+    private void setFacebookAttrs(User user, Map<String, Serializable> data) {
+      user.setFacebookId(Long.valueOf((String) data.get("id")));
+      String fullName = (String) data.get("name");
+      String[] nameArr = fullName.split(" ");
+      user.setFirstName(nameArr[0]);
+      user.setLastName(nameArr[1]);
+    }
+
+    private void saveUser(User user) {
+      if (userService.exists(user.getEmail()).isEmpty()){
+        userService.saveUser(user);
     }
   }
 }

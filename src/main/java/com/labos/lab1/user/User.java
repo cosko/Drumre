@@ -15,6 +15,7 @@ public class User {
   private String id;
   private String username;
   private Long twitterId;
+  private Long facebookId;
   private Map<String, Integer> watched;
   private Map<String, Integer> actors;
   private Map<String, Integer> genres;
@@ -130,4 +131,13 @@ public class User {
   public void setEmailVerified(Boolean emailVerified) {
     this.emailVerified = emailVerified;
   }
+
+  public Long getFacebookId() {
+    return facebookId;
+  }
+
+  public void setFacebookId(Long facebookId) {
+    this.facebookId = facebookId;
+  }
+
 }
