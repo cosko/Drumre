@@ -21,4 +21,11 @@ public interface MovieRepository extends MongoRepository<Movie, String> {
         "           'genre': {$regex : ?1, $options: 'i'}," +
         "           'actors': {$regex : ?2, $options: 'i'}}")
     List<Movie> findFiltered(String title, String genre, String actor);
+
+    @Query(value= "{'genre': {$regex : ?0, $options: 'i'}}")
+    List<Movie> findFilteredByGenre(String genre);
+
+    @Query(value= "{'actors': {$regex : ?0, $options: 'i'}}")
+    List<Movie> findFilteredByActor(String actor);
+
 }

@@ -7,6 +7,7 @@ import com.labos.lab1.movie.Movie;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.util.Pair;
 
 @Document("users")
 public class User {
@@ -19,7 +20,7 @@ public class User {
   private Map<String, Integer> watched;
   private Map<String, Integer> actors;
   private Map<String, Integer> genres;
-  private List<Movie> recommended;
+  private List<Pair<Movie, Double>> recommended;
   private String firstName;
   private String lastName;
   private String picture;
@@ -84,11 +85,12 @@ public class User {
     this.watched = watched;
   }
 
-  public List<Movie> getRecommended() {
+  public List<Pair<Movie, Double>> getRecommended() {
     return recommended;
   }
 
-  public void setRecommended(List<Movie> recommended) {
+  public void setRecommended(
+      List<Pair<Movie, Double>> recommended) {
     this.recommended = recommended;
   }
 
