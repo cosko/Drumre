@@ -1,8 +1,6 @@
 package com.labos.lab1.recommended;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.labos.lab1.movie.Movie;
 import com.labos.lab1.movie.MovieRepository;
@@ -34,7 +32,7 @@ public class RecommendControler {
     public String recommended(Model model, Authentication auth, @AuthenticationPrincipal OAuth2User user){
         User currentUser = userService.getUniqueUser(auth, user);
         model.addAttribute("recommendedMovies",
-                           currentUser.getRecommended() == null ? movieRepository.findBestMovies().subList(0, 50)
+                           currentUser.getRecommended().stream().findFirst().get().getTitle() == null ? movieRepository.findBestMovies().subList(0, 50)
                                                                   : currentUser.getRecommended());
         return "pages/recommended";
     }

@@ -2,6 +2,7 @@ package com.labos.lab1.recommended;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -54,8 +55,23 @@ public class RecommendedService {
       }
       recommendedMovies.add(Pair.of(movie, score));
     });
-    recommendedMovies.sort((o1, o2) -> (int) (o2.getSecond() - o1.getSecond()));
-    user.setRecommended(recommendedMovies);
-    return recommendedMovies.stream().filter(movie -> movie.getSecond() > 0).map(Pair::getFirst).collect(Collectors.toList());
+    recommendedMovies.sort(new Comparator<Pair<Movie, Double>>() {
+      @Override
+      public int compare(Pair<Movie, Double> o1, Pair<Movie, Double> o2) {
+        if (o1.getSecond() == o2.getSecond()){
+          if (!o1.getFirst().getImdbRating().equals("N/A") && !o2.getFirst().getImdbRating().equals("N/A")){
+            return (int) (Double.parseDouble(o2.getFirst().getImdbRating()) -
+                Double.parseDouble(o1.getFirst().getImdbRating()));
+          }
+        }
+        return (int) (o2.getSecond() - o1.getSecond());
+      }
+    });
+    List<Movie> finalList = recommendedMovies.stream()
+                                             .filter(movie -> movie.getSecond() > 0 && !user.getWatched().containsKey(movie.getFirst().getUniqueId()))
+                                             .map(Pair::getFirst).collect(Collectors.toList());
+    user.setRecommended(finalList);
+    userService.saveUser(user);
+    return finalList;
   }
 }

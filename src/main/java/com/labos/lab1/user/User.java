@@ -20,7 +20,7 @@ public class User {
   private Map<String, Integer> watched;
   private Map<String, Integer> actors;
   private Map<String, Integer> genres;
-  private List<Pair<Movie, Double>> recommended;
+  private List<Movie> recommended;
   private String firstName;
   private String lastName;
   private String picture;
@@ -85,12 +85,11 @@ public class User {
     this.watched = watched;
   }
 
-  public List<Pair<Movie, Double>> getRecommended() {
+  public List<Movie> getRecommended() {
     return recommended;
   }
 
-  public void setRecommended(
-      List<Pair<Movie, Double>> recommended) {
+  public void setRecommended(List<Movie> recommended) {
     this.recommended = recommended;
   }
 
