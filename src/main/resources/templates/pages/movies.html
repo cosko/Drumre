@@ -35,7 +35,7 @@
             </form>
         </div>
         <div class="flex flex-wrap items-center justify-around">
-            <a th:each="movie:${movies}" th:href="@{/movieDetails/{id}(title=${movie.uniqueId})}">
+            <a th:each="movie:${movies}" th:href="@{/movieDetails/{id}(id=${movie.uniqueId})}">
                 <img th:if="${movies} != null" class="h-96 w-80 object-contain hover:cursor-pointer hover:object-scale-down px-3 py-2 " alt="Movie poster"
                      th:src="${movie.poster}" th:title="${movie.title}">
             </a>

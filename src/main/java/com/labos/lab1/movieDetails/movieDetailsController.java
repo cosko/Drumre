@@ -36,34 +36,29 @@ public class movieDetailsController {
     @Autowired
     UserService userService;
     
-    @GetMapping("/movieDetails/{title}")
-    public String movieDetails(Authentication auth, Model model, @PathVariable("title") String title, @AuthenticationPrincipal OAuth2User user, HttpServletRequest request){
+    @GetMapping("/movieDetails/{id}")
+    public String movieDetails(Authentication auth, Model model, @PathVariable("id") String id, @AuthenticationPrincipal OAuth2User user, HttpServletRequest request){
         User currentUser = userService.getUniqueUser(auth, user);
         
-        if(title == "" || title == null){
+        if(id == "" || id == null){
             return "index";
         }
         
-        Optional<Movie> movie = movieRepository.findByTitle(title);
-        if(movie.isEmpty()){
-            model.addAttribute("movie", null);
-            //System.out.println("null");
+        Movie movie = movieRepository.findByUniqueId(id);
+        model.addAttribute("movie", movie);
+        request.getSession().setAttribute("movie", movie.getTitle());;
+        if (currentUser.getWatched() == null){
+            model.addAttribute("autoselect", 0);
+            return "pages/movieDetails";
+        }
+        if(currentUser.getWatched().containsKey(movie.getTitle())){
+            model.addAttribute("autoselect", 1);
+            model.addAttribute("rating", currentUser.getWatched().get(movie.getTitle()));
         }
         else{
-            model.addAttribute("movie", movie.get());
-            request.getSession().setAttribute("movie", movie.get().getTitle());;
-            if (currentUser.getWatched() == null){
-                model.addAttribute("autoselect", 0);
-                return "pages/movieDetails";
-            }
-            if(currentUser.getWatched().containsKey(movie.get().getTitle())){
-                model.addAttribute("autoselect", 1);
-                model.addAttribute("rating", currentUser.getWatched().get(movie.get().getTitle()));
-            }
-            else{
-                model.addAttribute("autoselect", 0);
-            }
+            model.addAttribute("autoselect", 0);
         }
+
         return "pages/movieDetails";
     }
 
