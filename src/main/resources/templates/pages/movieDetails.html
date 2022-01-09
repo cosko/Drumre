@@ -15,7 +15,7 @@
             <div class="mt-12">
                 <div class="flex">
                     <div class="mr-6">
-                        <img th:src="${movie.poster}" alt="Slika">
+                        <img class="object-contain" th:src="${movie.poster}" alt="Slika">
                     </div>
                     <div class="flex flex-col justify-between">
                         <div>
@@ -36,11 +36,17 @@
                 </div>
                 <div class="flex flex-col">
                     <div>
+                        <p th:text="'Prosječna ocjena: ' + ${movie.imdbRating} + '/10'"></p>
+                    </div>
+                    <div>
+                        <p th:text="'Godina izlaska: ' + ${movie.year}"></p>
+                    </div>
+                    <div class="mt-3">
                         <div class="float-left mr-3">
                             <form action="#" th:action="@{/movieDetails/}" method="post">
                                 <label for="status" class="block text-sm font-medium text-gray-100">Status:</label>
                                 <select title="Status" name="watched-status" id="status" onchange="this.form.submit()"
-                                        class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-100
+                                        class="mt-1 block w-full pl-3 pr-10 py-1 text-base border-gray-100
                                        focus:outline-none focus:ring-gray-100 focus:border-gray-100
                                        sm:text-sm rounded-md text-gray-900">
                                     <option th:value="${0}" th:selected="${autoselect==0}">Not watched</option>
@@ -51,8 +57,8 @@
                         <div class="float-left">
                             <form th:style="${autoselect == 1 ? '' : 'display:none'}" action="#" th:action="@{/updateRating}" method="post">
                                 <label for="rating" class="block text-sm font-medium text-gray-100">Rating:</label>
-                                <select id="rating" name="location" onchange="this.form.submit()"
-                                        class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-100
+                                <select id="rating" name="rating" onchange="this.form.submit()"
+                                        class="mt-1 block w-full pl-3 pr-10 py-1 text-base border-gray-100
                                        focus:outline-none focus:ring-gray-100 focus:border-gray-100
                                        sm:text-sm rounded-md text-gray-900">
                                     <option th:each="i: ${#numbers.sequence(0, 10)}"
@@ -63,12 +69,6 @@
                                 </select>
                             </form>
                         </div>
-                    </div>
-                    <div>
-                        <p th:text="'Prosječna ocjena: ' + ${movie.imdbRating} + '/10'"></p>
-                    </div>
-                    <div>
-                        <p th:text="'Godina izlaska: ' + ${movie.year}"></p>
                     </div>
                 </div>
             </div>
