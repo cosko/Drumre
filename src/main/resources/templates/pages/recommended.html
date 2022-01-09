@@ -7,13 +7,13 @@
 </head>
 <body>
     <div id="page">
-        <div class="mb-24">
+        <div class="flex justify-end items-center mt-12">
             <form action="#" th:action="@{/recommended}" method="post">
-                <p>Getting your recommendation might take a while, please be patient</p>
-                <button type="submit" class="rounded-md border-2 bg-green-400">Get my reccomendations</button>
+                <button type="submit" class="px-3 py-2 text-2xl rounded bg-[#26BB98]"
+                        th:title="'Generiranje filmova može potrajati, molimo budite strpljivi'">Generate my recommendations*</button>
             </form>
         </div>
-        <div class="flex flex-wrap items-center justify-around">
+        <div class="flex flex-wrap items-center justify-around mt-12">
             <a th:each="movie:${recommendedMovies}" th:href="@{/movieDetails/{id}(id=${movie.uniqueId})}">
                 <img class="h-96 w-80 object-contain hover:cursor-pointer hover:object-scale-down px-3 py-2 " alt="Movie poster"
                      th:src="${movie.poster}" th:title="${movie.title}">
