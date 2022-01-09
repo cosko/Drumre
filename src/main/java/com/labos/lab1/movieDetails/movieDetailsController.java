@@ -83,7 +83,7 @@ public class movieDetailsController {
                     for (String genre : genres) {
                         if (userObject.getGenres().get(genre) != null) {
                             scoreChange = userObject.getGenres().get(genre)
-                                    + (userObject.getWatched().get(uniqueId) - userObject.getGenres().get(genre)) / 2;
+                                    + (userObject.getWatched().get(uniqueId) -5 - userObject.getGenres().get(genre)) / 2 -5;
                         } else {
                             scoreChange = userObject.getGenres().get(genre);
                         }
@@ -97,10 +97,10 @@ public class movieDetailsController {
                     for (String actor : actors) {
                         actor = String.join("", Arrays.asList(actor.split("\\.")));
                         if (userObject.getGenres().get(actor) != null) {
-                            scoreChangeActor = userObject.getGenres().get(actor)
-                                    + (userObject.getWatched().get(uniqueId) - userObject.getGenres().get(actor)) / 2;
+                            scoreChangeActor = userObject.getActors().get(actor)
+                                    + (userObject.getWatched().get(uniqueId) -5 - userObject.getGenres().get(actor)) / 2;
                         } else {
-                            scoreChangeActor = userObject.getGenres().get(actor);
+                            scoreChangeActor = userObject.getActors().get(actor);
                         }
                         userObject.getActors().put(actor, scoreChangeActor);
                     }
@@ -129,9 +129,9 @@ public class movieDetailsController {
             for (String genre : genres) {
                 if (userObject.getGenres().get(genre) != null) {
                     scoreChange = userObject.getGenres().get(genre)
-                            + (userObject.getWatched().get(uniqueId) - userObject.getGenres().get(genre)) / 2;
+                            + (userObject.getWatched().get(uniqueId) -5 - userObject.getGenres().get(genre)) / 2;
                 } else {
-                    scoreChange = 5;
+                    scoreChange = 0;
                 }
                 userObject.getGenres().put(genre, scoreChange);
             }
@@ -141,9 +141,9 @@ public class movieDetailsController {
                 actor = String.join("", Arrays.asList(actor.split("\\.")));
                 if (userObject.getActors().get(actor) != null) {
                     scoreChangeActor = userObject.getActors().get(actor)
-                            + (userObject.getWatched().get(uniqueId) - userObject.getActors().get(actor)) / 2;
+                            + (userObject.getWatched().get(uniqueId) -5 - userObject.getActors().get(actor)) / 2 ;
                 } else {
-                    scoreChangeActor = 5;
+                    scoreChangeActor = 0;
                 }
                 scoreChangeActor = userObject.getActors().put(actor, scoreChangeActor);
             }
@@ -171,9 +171,9 @@ public class movieDetailsController {
         for (String genre : genres) {
             if (userObject.getGenres().get(genre) != null) {
                 scoreChange = userObject.getGenres().get(genre)
-                        + (userObject.getWatched().get(uniqueId) - userObject.getGenres().get(genre)) / 2;
+                        + (userObject.getWatched().get(uniqueId) -5 - userObject.getGenres().get(genre)) / 2;
             } else {
-                scoreChange = rating;
+                scoreChange = rating -5;
             }
             userObject.getGenres().put(genre, scoreChange);
         }
@@ -183,9 +183,9 @@ public class movieDetailsController {
             actor = String.join("", Arrays.asList(actor.split("\\.")));
             if (userObject.getActors().get(actor) != null) {
                 scoreChangeActor = userObject.getActors().get(actor)
-                        + (userObject.getWatched().get(uniqueId) - userObject.getActors().get(actor)) / 2;
+                        + (userObject.getWatched().get(uniqueId) -5 - userObject.getActors().get(actor)) / 2;
             } else {
-                scoreChangeActor = rating;
+                scoreChangeActor = rating -5;
             }
             scoreChangeActor = userObject.getActors().put(actor, scoreChangeActor);
         }
