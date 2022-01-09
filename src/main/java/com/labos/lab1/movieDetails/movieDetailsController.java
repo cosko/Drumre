@@ -3,7 +3,6 @@ package com.labos.lab1.movieDetails;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 
 import com.labos.lab1.movie.Movie;
@@ -11,7 +10,6 @@ import com.labos.lab1.movie.MovieRepository;
 import com.labos.lab1.user.User;
 import com.labos.lab1.user.UserRepository;
 import com.labos.lab1.user.UserService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -46,7 +44,7 @@ public class movieDetailsController {
         
         Movie movie = movieRepository.findByUniqueId(id);
         model.addAttribute("movie", movie);
-        request.getSession().setAttribute("movie", movie.getTitle());;
+        request.getSession().setAttribute("movie", movie.getTitle());
         if (currentUser.getWatched() == null){
             model.addAttribute("autoselect", 0);
             return "pages/movieDetails";

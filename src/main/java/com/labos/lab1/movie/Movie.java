@@ -124,4 +124,23 @@ public class Movie {
             ", uniqueId='" + uniqueId + '\'' +
             '}';
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    Movie movie = (Movie) o;
+
+    return uniqueId != null ? uniqueId.equals(movie.uniqueId) : movie.uniqueId == null;
+  }
+
+  @Override
+  public int hashCode() {
+    return uniqueId != null ? uniqueId.hashCode() : 0;
+  }
 }

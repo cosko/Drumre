@@ -7,38 +7,17 @@
 </head>
 <body>
     <div id="page">
-        <div class="mt-12">
-            <p class="text-2xl font-bold">10 Najbolje ocijenjenih filmova</p>
-        </div>
-        <div class="w-full mt-3">
-            <div th:replace="fragments/splide :: splide(${topMovies})"></div>
-        </div>
-        <div class="mt-12">
-            <p class="text-2xl font-bold">10 popularnih filmova</p>
-        </div>
-        <div class="w-full mt-3 mb-24">
-            <div th:replace="fragments/splide :: splide(${popularMovies})"></div>
-        </div>
-        <div>
+        <div class="mb-24">
             <form action="#" th:action="@{/recommended}" method="post">
                 <p>Getting your recommendation might take a while, please be patient</p>
-                <button type="submit" class="rounded-md border-2 bg-green-400"> Get my reccomendations </button>
+                <button type="submit" class="rounded-md border-2 bg-green-400">Get my reccomendations</button>
             </form>
         </div>
-        <div th:each="movie:${movies}" class="px-4 py-3">
-            <div class="grid grid-cols-3">
-                <div class="mr-3">
-                    <img class="h-96 w-80 object-contain" th:src="${movie.poster}" alt="Movie poster">
-                    <p th:text="'Prosječna ocjena: ' + ${movie.imdbRating} + '/10'"></p>
-                    <p th:text="'Actors: ' + ${movie.actors}"></p>
-                </div>
-                <div class="col-span-2">
-                    <p th:text="${movie.title}" class="mb-3 text-2xl"></p>
-                    <a th:href="@{/movieDetails/{title}(title=${movie.title})}" class="underline text-sky-500">Details</a><br>
-                    <p th:utext="${movie.plot}"></p>
-                </div>
-            </div>
-            <hr>
+        <div class="flex flex-wrap items-center justify-around">
+            <a th:each="movie:${recommendedMovies}" th:href="@{/movieDetails/{id}(id=${movie.uniqueId})}">
+                <img class="h-96 w-80 object-contain hover:cursor-pointer hover:object-scale-down px-3 py-2 " alt="Movie poster"
+                     th:src="${movie.poster}" th:title="${movie.title}">
+            </a>
         </div>
     </div>
 </body>
