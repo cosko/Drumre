@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import com.labos.lab1.integration.FacebookService;
 import com.labos.lab1.user.User;
 import com.labos.lab1.user.UserService;
 import org.springframework.core.ResolvableType;
@@ -34,13 +35,16 @@ public class LoginController {
   private ClientRegistrationRepository clientRegistrationRepository;
   private OAuth2AuthorizedClientService authorizedClientService;
   private UserService userService;
+  private FacebookService facebookService;
 
   public LoginController(ClientRegistrationRepository clientRegistrationRepository,
                          OAuth2AuthorizedClientService authorizedClientService,
-                         UserService userService){
+                         UserService userService,
+                         FacebookService facebookService){
     this.clientRegistrationRepository = clientRegistrationRepository;
     this.authorizedClientService = authorizedClientService;
     this.userService = userService;
+    this.facebookService = facebookService;
   }
 
   @GetMapping("/login")
@@ -108,6 +112,8 @@ public class LoginController {
       String[] nameArr = fullName.split(" ");
       user.setFirstName(nameArr[0]);
       user.setLastName(nameArr[1]);
+      saveUser(facebookService.setUserLikedMovies(user));
+      //saveUser(user);
     }
 
     private void saveUser(User user) {

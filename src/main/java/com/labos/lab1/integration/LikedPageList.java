@@ -8,6 +8,12 @@ public class LikedPageList {
     @JsonProperty("data")
     private List<LikedPage> likedPages;
 
+    public LikedPageList(List<LikedPage> likedPages) {
+        this.likedPages = likedPages;
+    }
+    public LikedPageList() {
+    }
+
     public List<LikedPage> getLikedPages() {
         return likedPages;
     }

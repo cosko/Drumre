@@ -1,5 +1,6 @@
 package com.labos.lab1.user;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -44,6 +45,8 @@ public class User {
   }
 
   public Map<String, Integer> getActors() {
+    if(actors == null)
+        actors = new HashMap<String, Integer>();
     return actors;
   }
 
@@ -51,12 +54,22 @@ public class User {
     this.actors = actors;
   }
 
+  public void setActorEntry(String actor, Integer score) {
+    this.actors.put(actor, score);
+  }
+
   public Map<String, Integer> getGenres() {
-    return genres;
+      if(genres == null)
+          genres = new HashMap<String, Integer>();
+      return genres;
   }
 
   public void setGenres(Map<String, Integer> genres) {
     this.genres = genres;
+  }
+
+  public void setGenreEntry(String genre, Integer score) {
+    this.genres.put(genre, score);
   }
 
   public Long getTwitterId() {
@@ -76,11 +89,20 @@ public class User {
   }
 
   public Map<String, Integer> getWatched() {
-    return watched;
+      if(watched == null)
+          watched = new HashMap<String, Integer>();
+      return watched;
   }
 
   public void setWatched(Map<String, Integer> watched) {
     this.watched = watched;
+  }
+
+  public void setWatchedEntry(String movie, Integer score) {
+    this.watched.put(movie, score);
+  }
+  public void setActorsEntry(String movie, Integer score) {
+    this.actors.put(movie, score);
   }
 
   public List<Movie> getRecommended() {
