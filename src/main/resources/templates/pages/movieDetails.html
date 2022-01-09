@@ -7,51 +7,72 @@
 </head>
 <body>
 <div id="page">
-    <div class="flex">
-        <div class="mr-3">
-            <img th:src="${movie.poster}" alt="">
+    <div class="max-w-5xl mx-auto mt-3">
+        <div class="flex flex-col justify-center">
+            <div class="flex justify-center">
+                <p class="mb-3 text-5xl" th:text="${movie.title}"></p>
+            </div>
+            <div class="mt-12">
+                <div class="flex">
+                    <div class="mr-6">
+                        <img class="object-contain" th:src="${movie.poster}" alt="Slika">
+                    </div>
+                    <div class="flex flex-col justify-between">
+                        <div>
+                            <p th:utext="${movie.plot}"></p>
+                        </div>
+                        <div>
+                            <div>
+                                <span><b>Director: </b><span th:text="${movie.director}"></span></span>
+                            </div>
+                            <div>
+                                <span><b>Actors: </b><span th:text="${movie.actors}"></span></span>
+                            </div>
+                            <div>
+                                <span><b>Genres: </b><span th:text="${movie.genre}"></span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-col">
+                    <div>
+                        <p th:text="'Prosječna ocjena: ' + ${movie.imdbRating} + '/10'"></p>
+                    </div>
+                    <div>
+                        <p th:text="'Godina izlaska: ' + ${movie.year}"></p>
+                    </div>
+                    <div class="mt-3">
+                        <div class="float-left mr-3">
+                            <form action="#" th:action="@{/movieDetails/}" method="post">
+                                <label for="status" class="block text-sm font-medium text-gray-100">Status:</label>
+                                <select title="Status" name="watched-status" id="status" onchange="this.form.submit()"
+                                        class="mt-1 block w-full pl-3 pr-10 py-1 text-base border-gray-100
+                                       focus:outline-none focus:ring-gray-100 focus:border-gray-100
+                                       sm:text-sm rounded-md text-gray-900">
+                                    <option th:value="${0}" th:selected="${autoselect==0}">Not watched</option>
+                                    <option th:value="${1}" th:selected="${autoselect==1}">Watched</option>
+                                </select>
+                            </form>
+                        </div>
+                        <div class="float-left">
+                            <form th:style="${autoselect == 1 ? '' : 'display:none'}" action="#" th:action="@{/updateRating}" method="post">
+                                <label for="rating" class="block text-sm font-medium text-gray-100">Rating:</label>
+                                <select id="rating" name="rating" onchange="this.form.submit()"
+                                        class="mt-1 block w-full pl-3 pr-10 py-1 text-base border-gray-100
+                                       focus:outline-none focus:ring-gray-100 focus:border-gray-100
+                                       sm:text-sm rounded-md text-gray-900">
+                                    <option th:each="i: ${#numbers.sequence(0, 10)}"
+                                            th:value="${i}"
+                                            th:text="${i}"
+                                            th:selected="${rating == i}">
+                                    </option>
+                                </select>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <h1 th:text="${movie.title}" class="mb-3 text-2xl"></h1>
-        <br>
-        <p th:text="'Prosječna ocjena: ' + ${movie.imdbRating}"></p>
-        <br>
-        <p th:text="'Godina izlaska: ' + ${movie.year}"></p>
-        <br>
-        <div class="inline-block">
-            <div>
-            <div class="float-left">
-                <form action="#" th:action="@{/movieDetails/}" method="post">
-                    <label for="status">Status:</label>
-                    <select title="Status" name="watched-status" id="status" onchange="this.form.submit()">
-                        <option th:value="${0}" th:selected="${autoselect==0}">Not watched</option>
-                        <option th:value="${1}" th:selected="${autoselect==1}">Watched</option>
-                    </select>
-                </form>
-            </div>
-            <br>
-            <div class="float-left">
-                <form th:style="${autoselect == 1 ? '' : 'display:none'}" action="#" th:action="@{/updateRating}" method="post">
-                    <label for="rating">Rating:</label>
-                    <select title="Rating" name="rating" id="rating" onchange="this.form.submit()">
-                        <option value="1" th:selected="${rating == 1}">1</option>
-                        <option value="2" th:selected="${rating == 2}">2</option>
-                        <option value="3" th:selected="${rating == 3}">3</option>
-                        <option value="4" th:selected="${rating == 4}">4</option>
-                        <option value="5" th:selected="${rating == 5}">5</option>
-                        <option value="6" th:selected="${rating == 6}">6</option>
-                        <option value="7" th:selected="${rating == 7}">7</option>
-                        <option value="8" th:selected="${rating == 8}">8</option>
-                        <option value="9" th:selected="${rating == 9}">9</option>
-                        <option value="10" th:selected="${rating == 10}">10</option>
-                    </select>
-                </form>
-            </div>
-            </div>
-        </div>
-        <br>
-    </div>
-    <div>
-        <p th:utext="${movie.plot}"></p>
     </div>
 </div>
 </body>
