@@ -48,10 +48,6 @@ public class movieDetailsController {
         model.addAttribute("movie", movie);
         request.getSession().setAttribute("movie", movie.getUniqueId());
         ;
-        if (currentUser.getWatched() == null) {
-            model.addAttribute("autoselect", 0);
-            return "pages/movieDetails";
-        }
         if (currentUser.getWatched().containsKey(movie.getUniqueId())) {
             model.addAttribute("autoselect", 1);
             model.addAttribute("rating", currentUser.getWatched().get(movie.getUniqueId()));
@@ -108,21 +104,8 @@ public class movieDetailsController {
                 userObject.getWatched().remove(uniqueId);
             }
         } else if (updateUser == 1) {
-            if (userObject.getWatched() == null) {
-                HashMap<String, Integer> map = new HashMap<String, Integer>();
-                map.put(uniqueId, 5);
-                userObject.setWatched(map);
-            } else {
+            if (!userObject.getWatched().containsKey(uniqueId)) {
                 userObject.getWatched().put(uniqueId, 5);
-
-            }
-            if (userObject.getActors() == null) {
-                HashMap<String, Integer> actorsMap = new HashMap<>();
-                userObject.setActors(actorsMap);
-            }
-            if (userObject.getGenres() == null) {
-                HashMap<String, Integer> genresMap = new HashMap<>();
-                userObject.setGenres(genresMap);
             }
             List<String> genres = Arrays.asList(movieRepository.findByUniqueId(uniqueId).getGenre().split(", "));
             Integer scoreChange;

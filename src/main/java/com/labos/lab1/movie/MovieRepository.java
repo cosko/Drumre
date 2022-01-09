@@ -1,10 +1,10 @@
 package com.labos.lab1.movie;
 
-import java.util.List;
-import java.util.Optional;
-
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
+
+import java.util.List;
+import java.util.Optional;
 
 public interface MovieRepository extends MongoRepository<Movie, String> {
 
@@ -25,7 +25,9 @@ public interface MovieRepository extends MongoRepository<Movie, String> {
     @Query(value= "{'genre': {$regex : ?0, $options: 'i'}}")
     List<Movie> findFilteredByGenre(String genre);
 
-    @Query(value= "{'actors': {$regex : ?0, $options: 'i'}}")
-    List<Movie> findFilteredByActor(String actor);
+    @Query(value= "{'title': { $in: ?0 } }")
+    List<Movie> findAllBy(String[] title);
 
+    @Query(value= "{ 'actors': { $regex: /.*?0.*/, $options: 'i' }}")
+    List<Movie> findFilteredByActor(String actor);
 }
