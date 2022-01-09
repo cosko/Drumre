@@ -9,7 +9,7 @@
 <div id="page">
     <div class="max-w-5xl mx-auto mt-3" th:object="${user}">
         <div th:if="${user.email} != null" class="bg-white shadow overflow-hidden sm:rounded-lg">
-            <div class="px-4 py-5 sm:px-6">
+            <div th:if="${user.emailVerified} != null" class="px-4 py-5 sm:px-6">
                 <img th:if="${user.picture} != null" th:src="${user.picture}" alt="Profile picture">
                 <span th:if="${user.emailVerified} != null" th:text="Verificiran"
                       class="text-blue-500"><i class="fas fa-check"></i></span>
@@ -47,6 +47,15 @@
                         </dt>
                         <dd th:text="${user.emailVerified}"
                             class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                        </dd>
+                    </div>
+                    <div th:if="${user.facebookId} != null" class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt class="text-sm font-medium text-gray-500">
+                            Lajkane stranice
+                        </dt>
+                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                            <span th:each="page:${likedPages.likedPages}" th:text="${page.name} + ' '">
+                            </span>
                         </dd>
                     </div>
                 </dl>
