@@ -31,9 +31,13 @@ public class RecommendControler {
     @GetMapping("/recommended")
     public String recommended(Model model, Authentication auth, @AuthenticationPrincipal OAuth2User user){
         User currentUser = userService.getUniqueUser(auth, user);
-        model.addAttribute("recommendedMovies",
-                           currentUser.getRecommended().stream().findFirst().get().getTitle() == null ? movieRepository.findBestMovies().subList(0, 50)
-                                                                  : currentUser.getRecommended().subList(0, 100));
+        if (currentUser.getRecommended() == null){
+            model.addAttribute("recommendedMovies", movieRepository.findBestMovies().subList(0, 100));
+        } else {
+            model.addAttribute("recommendedMovies",
+                               currentUser.getRecommended().stream().findFirst().get().getTitle() == null ? movieRepository.findBestMovies().subList(0, 50)
+                                                                      : currentUser.getRecommended().subList(0, 100));
+        }
         return "pages/recommended";
     }
 

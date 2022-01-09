@@ -46,7 +46,9 @@ public class FacebookService {
 
     public LikedPageList getUserLikedPages() {
         if(!userAuthorized()){
-            return new LikedPageList();
+            LikedPageList lpl = new LikedPageList();
+            lpl.setLikedPages(List.of());
+            return lpl;
         }
         Mono<LikedPageList> result = webClient.get()
                 .uri("/me/likes")
