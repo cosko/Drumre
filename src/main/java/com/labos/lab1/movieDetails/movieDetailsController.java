@@ -74,7 +74,6 @@ public class movieDetailsController {
         }
 
         String uniqueId = (String) request.getSession().getAttribute("movie");
-        System.out.println(updateUser);
         if (updateUser == 0) {
             if (userObject.getWatched() != null && userObject.getWatched().containsKey(uniqueId)) {
                 if (userObject.getGenres() != null) {
@@ -97,7 +96,6 @@ public class movieDetailsController {
                     Integer scoreChangeActor;
                     for (String actor : actors) {
                         actor = String.join("", Arrays.asList(actor.split("\\.")));
-                        System.out.println(actor);
                         if (userObject.getGenres().get(actor) != null) {
                             scoreChangeActor = userObject.getGenres().get(actor)
                                     + (userObject.getWatched().get(uniqueId) - userObject.getGenres().get(actor)) / 2;
@@ -141,7 +139,6 @@ public class movieDetailsController {
             Integer scoreChangeActor;
             for (String actor : actors) {
                 actor = String.join("", Arrays.asList(actor.split("\\.")));
-                System.out.println(actor);
                 if (userObject.getActors().get(actor) != null) {
                     scoreChangeActor = userObject.getActors().get(actor)
                             + (userObject.getWatched().get(uniqueId) - userObject.getActors().get(actor)) / 2;
@@ -178,14 +175,12 @@ public class movieDetailsController {
             } else {
                 scoreChange = rating;
             }
-            System.out.println(scoreChange);
             userObject.getGenres().put(genre, scoreChange);
         }
         List<String> actors = Arrays.asList(movieRepository.findByUniqueId(uniqueId).getActors().split(", "));
         Integer scoreChangeActor;
         for (String actor : actors) {
             actor = String.join("", Arrays.asList(actor.split("\\.")));
-            System.out.println(actor);
             if (userObject.getActors().get(actor) != null) {
                 scoreChangeActor = userObject.getActors().get(actor)
                         + (userObject.getWatched().get(uniqueId) - userObject.getActors().get(actor)) / 2;
