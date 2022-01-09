@@ -19,7 +19,7 @@ public class MovieController {
 
   @GetMapping
   public String getMovieInfo(Model model) {
-    model.addAttribute("movies", movieService.findBestMovies());
+    model.addAttribute("movies", movieService.findAllMovies());
     model.addAttribute("movieFilter", new MovieFilter());
     return "pages/movies";
   }

@@ -56,6 +56,13 @@ public class FacebookService {
         return result.block();
     }
 
+    public List<Movie> getUserLikedMovies() {
+        LikedPageList all = getUserLikedPages();
+        List<String> likedPageNames = all.getLikedPages().stream().map((LikedPage::getName)).toList();
+
+        return movieService.findMultiple(likedPageNames);
+    }
+
     public User setUserLikedMovies(User user){
         LikedPageList userLikedPages = getUserLikedPages();
         List<String> likedPageNames = userLikedPages.getLikedPages().stream().map((LikedPage::getName)).toList();

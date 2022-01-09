@@ -5,10 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.labos.lab1.movie.Movie;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.util.Pair;
 
 @Document("users")
 public class User {

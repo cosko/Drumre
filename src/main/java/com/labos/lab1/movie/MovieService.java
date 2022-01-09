@@ -8,6 +8,7 @@ import java.util.Optional;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.Gson;
 import com.labos.lab1.user.User;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -48,6 +49,10 @@ public class MovieService {
 
   public List<Movie> findBestMovies() {
     return movieRepository.findBestMovies();
+  }
+
+  public List<Movie> findAllMovies() {
+    return movieRepository.findAll(Sort.by(Sort.Direction.ASC, "title")).subList(0, 300);
   }
 
   public List<Movie> findFilteredMovies(MovieFilter filter) {

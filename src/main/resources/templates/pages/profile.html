@@ -3,19 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Lab1</title>
+    <title>Profil</title>
 </head>
 <body>
-    <div id="page">
-        <div class="bg-white shadow overflow-hidden sm:rounded-lg" th:object="${user}">
-            <div class="px-4 py-5 sm:px-6">
-                <img th:src="${user.picture}" alt="Profile picture">
-                <span th:if="${user.emailVerified}" th:text="Verificiran"
+<div id="page">
+    <div class="max-w-5xl mx-auto mt-3" th:object="${user}">
+        <div th:if="${user.email} != null" class="bg-white shadow overflow-hidden sm:rounded-lg">
+            <div th:if="${user.emailVerified} != null" class="px-4 py-5 sm:px-6">
+                <img th:if="${user.picture} != null" th:src="${user.picture}" alt="Profile picture">
+                <span th:if="${user.emailVerified} != null" th:text="Verificiran"
                       class="text-blue-500"><i class="fas fa-check"></i></span>
                 <span th:unless="${user.emailVerified}" th:text="Još nije verificiran"></span>
             </div>
             <div class="border-t border-gray-200">
                 <dl>
+                    <div th:if="${user.facebookId} != null" class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt class="text-sm font-medium text-gray-500">
+                            Facebook id
+                        </dt>
+                        <dd th:text="${user.facebookId}"
+                            class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                        </dd>
+                    </div>
                     <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                         <dt class="text-sm font-medium text-gray-500">
                             Ime i prezime
@@ -32,7 +41,7 @@
                                 class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                         </dd>
                     </div>
-                    <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <div th:if="${user.emailVerified} != null" class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                         <dt class="text-sm font-medium text-gray-500">
                             Verificiran
                         </dt>
@@ -40,9 +49,46 @@
                             class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                         </dd>
                     </div>
+                    <div th:if="${user.facebookId} != null" class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt class="text-sm font-medium text-gray-500">
+                            Lajkane stranice
+                        </dt>
+                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                            <span th:each="page:${likedMovies}" th:text="${page.title} + ' '">
+                            </span>
+                        </dd>
+                    </div>
                 </dl>
             </div>
         </div>
+        <div th:if="${user.email} == null">
+            <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+                <div class="px-4 py-5 sm:px-6">
+                    <img th:if="${user.picture} != null" th:src="${user.picture}" alt="Profile picture">
+                </div>
+                <div class="border-t border-gray-200">
+                    <dl>
+                        <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                            <dt class="text-sm font-medium text-gray-500">
+                                Twitter id
+                            </dt>
+                            <dd th:text="${user.twitterId}"
+                                class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                            </dd>
+                        </div>
+                        <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                            <dt class="text-sm font-medium text-gray-500">
+                                Korisničko ime
+                            </dt>
+                            <dd th:text="${user.username}"
+                                class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                            </dd>
+                        </div>
+                    </dl>
+                </div>
+            </div>
+        </div>
     </div>
+</div>
 </body>
 </html>
