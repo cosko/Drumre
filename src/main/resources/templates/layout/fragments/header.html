@@ -12,6 +12,9 @@
                 <div class="flex justify-center items-center">
                     <a th:href="@{/movies}" th:text="Movies"
                        class="text-white underline mr-2 auto"/>
+                       
+                    <a th:href="@{/recommended}" th:text="Recommended"
+                    class="text-white underline mr-2 auto"/>
                 </div>
                 <div class="flex justify-center items-center">
                     <div sec:authorize="isAuthenticated()" class="flex">
