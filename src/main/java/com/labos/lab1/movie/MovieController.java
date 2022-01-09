@@ -54,7 +54,6 @@ public class MovieController {
       fetchMovies();
     }
     List<Movie> exampleMovies = movieRepository.findBestMovies();
-    //model.addAttribute("movies", exampleMovies);
     model.addAttribute("topMovies", exampleMovies.subList(0, 10));
     List<Movie> popularMovies = movieRepository.findPopularMovies();
     model.addAttribute("popularMovies", popularMovies.subList(0, 10));

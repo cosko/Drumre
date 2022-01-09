@@ -38,4 +38,16 @@ public class UserService {
   public Optional<User> exists(String email){
     return userRepository.findByEmail(email);
   }
+
+  public User getUniqueUser(Authentication auth, OAuth2User user){
+    User currentUser;
+        if(user == null){
+            currentUser = ((User)auth.getPrincipal());
+            currentUser = userRepository.findByTwitterId(currentUser.getTwitterId()).get();
+        }
+        else{
+            currentUser = userRepository.findByEmail(user.getAttribute("email")).get();
+        }
+    return currentUser;
+  }
 }

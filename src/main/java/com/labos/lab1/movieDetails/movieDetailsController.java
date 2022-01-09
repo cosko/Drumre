@@ -10,6 +10,8 @@ import com.labos.lab1.movie.Movie;
 import com.labos.lab1.movie.MovieRepository;
 import com.labos.lab1.user.User;
 import com.labos.lab1.user.UserRepository;
+import com.labos.lab1.user.UserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -30,17 +32,13 @@ public class movieDetailsController {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    UserService userService;
     
     @GetMapping("/movieDetails/{title}")
     public String movieDetails(Authentication auth, Model model, @PathVariable("title") String title, @AuthenticationPrincipal OAuth2User user, HttpServletRequest request){
-        User currentUser;
-        if(user == null){
-            currentUser = ((User)auth.getPrincipal());
-            currentUser = userRepository.findByTwitterId(currentUser.getTwitterId()).get();
-        }
-        else{
-            currentUser = userRepository.findByEmail(user.getAttribute("email")).get();
-        }
+        User currentUser = userService.getUniqueUser(auth, user);
         
         if(title == "" || title == null){
             return "index";
