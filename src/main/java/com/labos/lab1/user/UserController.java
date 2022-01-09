@@ -24,9 +24,9 @@ public class UserController {
   }
 
   @GetMapping
-  public String getUser(Model model, @AuthenticationPrincipal OAuth2User user){
+  public String getUser(Model model, Authentication auth){
 
-    model.addAttribute("user", userService.getUser(user.getAttribute("email")).get());
+    model.addAttribute("user", userService.getUserFromAuth(auth));
     return "pages/profile";
   }
 }
