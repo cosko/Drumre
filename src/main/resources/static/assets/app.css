@@ -670,10 +670,6 @@ Ensure the default browser behavior of the `hidden` attribute.
   --tw-shadow-color: #86efac;
   --tw-shadow: var(--tw-shadow-colored);
 }
-.shadow-gray-100 {
-  --tw-shadow-color: #f3f4f6;
-  --tw-shadow: var(--tw-shadow-colored);
-}
 .hover\:cursor-pointer:hover {
   cursor: pointer;
 }
