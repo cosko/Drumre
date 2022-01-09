@@ -3,6 +3,8 @@ package com.labos.lab1.user;
 import java.security.Principal;
 import java.util.Map;
 
+import com.labos.lab1.integration.FacebookService;
+import com.labos.lab1.integration.LikedPageList;
 import org.springframework.security.core.AuthenticatedPrincipal;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,12 +21,16 @@ public class UserController {
 
   private final UserService userService;
 
-  public UserController(UserService userService){
+  private final FacebookService fbService;
+
+  public UserController(UserService userService, FacebookService fbService){
     this.userService = userService;
+    this.fbService = fbService;
   }
 
   @GetMapping
   public String getUser(Model model, Authentication auth){
+    // LikedPageList userLikedPages = fbService.getUserLikedPages();
 
     model.addAttribute("user", userService.getUserFromAuth(auth));
     return "pages/profile";
