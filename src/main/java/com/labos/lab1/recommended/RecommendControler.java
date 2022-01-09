@@ -42,33 +42,13 @@ public class RecommendControler {
     @PostMapping("/recommended")
     public String getRecommendations(Authentication auth, Model model, @AuthenticationPrincipal OAuth2User user){
         User currentUser = userService.getUniqueUser(auth, user);
-        Map<String, Integer> genres = generateGenres();
-        Map<String, Integer> actors = generateActors();
+        List<Movie> recommendedMovies = recommendedService.findRecommendedMovies(currentUser.getGenres(), currentUser.getActors(), currentUser);
 
-        List<Movie> recommendedMovies = recommendedService.findRecommendedMovies(genres, actors, currentUser);
         if (recommendedMovies.isEmpty()){
             model.addAttribute("recommendedMovies", movieRepository.findBestMovies().subList(0, 50));
         } else{
             model.addAttribute("recommendedMovies", recommendedMovies.subList(0, 100));
         }
         return "pages/recommended";
-    }
-
-    private Map<String, Integer> generateActors() {
-        Map<String, Integer> mapa = new HashMap<>();
-        mapa.put("Matthew McConaughey", 7);
-        mapa.put("Robert Downey Jr", 9);
-        mapa.put("Arnold Schwarzenegger", 6);
-        mapa.put("Chris Pratt", -3);
-        return mapa;
-    }
-
-    private Map<String, Integer> generateGenres() {
-        Map<String, Integer> mapa = new HashMap<>();
-        mapa.put("Action", 7);
-        mapa.put("Adventure", 9);
-        mapa.put("Sci-Fi", 6);
-        mapa.put("Drama", -3);
-        return mapa;
     }
 }
