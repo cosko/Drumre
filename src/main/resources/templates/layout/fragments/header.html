@@ -6,27 +6,29 @@
 </head>
 <body>
     <header>
-        <div class="w-full bg-blue-400 h-12 py-2">
+        <div class="w-full bg-[#26BB98] py-2">
             <div class="flex justify-between">
-                <a th:href="@{/}" class="font-bold text-white text-2xl px-3">MyList<span style="font-size: small;">of</span>Movies</a>
+                <a th:href="@{/}" class="font-bold text-gray-900 text-2xl px-3">MyList<span style="font-size: small;">of</span>Movies</a>
                 <div class="flex justify-center items-center">
-                    <a th:href="@{/movies}" th:text="Movies"
-                       class="text-white underline mr-2 auto"/>
+                    <a th:href="@{/movies}" th:text="'Filmovi'"
+                       class="px-3 py-2 text-gray-900 hover:bg-gray-200 rounded font-medium mr-2 auto"></a>
+                    <a th:href="@{/recommended}" th:text="'Moje preporuke'"
+                       class="px-3 py-2 text-gray-900 hover:bg-gray-200 rounded font-medium mr-2 auto"></a>
                 </div>
                 <div class="flex justify-center items-center">
                     <div sec:authorize="isAuthenticated()" class="flex">
                         <a th:text="Profil" th:href="@{/profile}"
-                           class="text-white text-lg mr-2 items-center"></a>
-                        <form th:action="@{/logout}" method="post">
+                           class="text-gray-900 hover:bg-gray-200 px-3 py-2 rounded text-lg mr-2 items-center"></a>
+                        <form th:action="@{/logout}" method="post" class="flex items-center justify-center">
                             <input type="submit" value="Logout"
-                                   class="bg-red-400 rounded px-3 py-1 hover:bg-red-500
-                           cursor-pointer mr-2 text-white"/>
+                                   class="bg-red-600 hover:bg-red-700 rounded px-3 py-1
+                                          cursor-pointer mr-2 text-gray-100"/>
                         </form>
                     </div>
                     <div sec:authorize="isAnonymous()">
                         <a th:href="@{/login}" th:text="Login"
-                           class="bg-green-400 rounded px-3 py-1 hover:bg-green-500
-                                  cursor-pointer mr-2 text-white">
+                           class="border border-2 border-slate-800 hover:border-gray-100 rounded px-3 py-1
+                                  cursor-pointer mr-2 text-gray-900">
                         </a>
                     </div>
                 </div>
