@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.function.Consumer;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
@@ -15,11 +17,16 @@ import net.minidev.json.parser.ParseException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/movies")
@@ -42,26 +49,28 @@ public class MovieController {
   }
 
   @GetMapping
-  public String getMovieInfo(Model model) throws ParseException, JsonProcessingException {
+  public String getMovieInfo(Model model, HttpServletRequest request) throws ParseException, JsonProcessingException {
     if (movieService.collectionSize() == 0){
       fetchMovies();
     }
-    List<Movie> exampleMovies = movieService.getAll();
-    model.addAttribute("movies", exampleMovies);
+    List<Movie> exampleMovies = movieRepository.findBestMovies();
+    //model.addAttribute("movies", exampleMovies);
     model.addAttribute("topMovies", exampleMovies.subList(0, 10));
-    model.addAttribute("popularMovies", exampleMovies.subList(20, 30));
-    ArrayList<Movie> movies = new ArrayList<Movie>();
-    int i = 0;
-    for(Movie movie : movieRepository.findAll()){
-      i++;
-      movies.add(movie);
-      if(i >= 15){
-        break;
-      }
-    }
-    model.addAttribute("movies", movieRepository.findAll());
-    System.out.println("Creating page");
+    List<Movie> popularMovies = movieRepository.findPopularMovies();
+    model.addAttribute("popularMovies", popularMovies.subList(0, 10));
+    List<Movie> displayedMovies = (List<Movie>)request.getSession().getAttribute("movies");
+    model.addAttribute("movies", displayedMovies);
+    model.addAttribute("previousInput", request.getSession().getAttribute("input"));
+
     return "pages/movies";
+  }
+
+  @PostMapping
+  public ModelAndView findMovies(Model model, @RequestParam("search") String title, HttpServletRequest request) {
+    List<Movie> matchingMovies = movieRepository.findByTitleRegex(title);
+    request.getSession().setAttribute("movies", matchingMovies);
+    request.getSession().setAttribute("input", title);
+    return new ModelAndView("redirect:/movies");
   }
 
   private void fetchMovies() {
