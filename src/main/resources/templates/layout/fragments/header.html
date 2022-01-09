@@ -10,7 +10,9 @@
             <div class="flex justify-between">
                 <a th:href="@{/}" class="font-bold text-gray-900 text-2xl px-3">MyList<span style="font-size: small;">of</span>Movies</a>
                 <div class="flex justify-center items-center">
-                    <a th:href="@{/movies}" th:text="'Filmovi'"
+                    <a th:href="@{/}" th:text="'Naslovna'"
+                       class="px-3 py-2 text-gray-900 hover:bg-gray-200 rounded font-medium mr-2 auto"></a>
+                    <a th:href="@{/movies}" th:text="'Svi filmovi'"
                        class="px-3 py-2 text-gray-900 hover:bg-gray-200 rounded font-medium mr-2 auto"></a>
                     <a th:href="@{/recommended}" th:text="'Moje preporuke'"
                        class="px-3 py-2 text-gray-900 hover:bg-gray-200 rounded font-medium mr-2 auto"></a>
