@@ -3,7 +3,6 @@ package com.labos.lab1.movieDetails;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 
 import com.labos.lab1.movie.Movie;
@@ -35,27 +34,28 @@ public class movieDetailsController {
 
     @Autowired
     UserService userService;
-    
+
     @GetMapping("/movieDetails/{id}")
-    public String movieDetails(Authentication auth, Model model, @PathVariable("id") String id, @AuthenticationPrincipal OAuth2User user, HttpServletRequest request){
+    public String movieDetails(Authentication auth, Model model, @PathVariable("id") String id,
+            @AuthenticationPrincipal OAuth2User user, HttpServletRequest request) {
         User currentUser = userService.getUniqueUser(auth, user);
-        
-        if(id == "" || id == null){
+
+        if (id == "" || id == null) {
             return "index";
         }
-        
+
         Movie movie = movieRepository.findByUniqueId(id);
         model.addAttribute("movie", movie);
-        request.getSession().setAttribute("movie", movie.getTitle());;
-        if (currentUser.getWatched() == null){
+        request.getSession().setAttribute("movie", movie.getUniqueId());
+        ;
+        if (currentUser.getWatched() == null) {
             model.addAttribute("autoselect", 0);
             return "pages/movieDetails";
         }
-        if(currentUser.getWatched().containsKey(movie.getTitle())){
+        if (currentUser.getWatched().containsKey(movie.getUniqueId())) {
             model.addAttribute("autoselect", 1);
-            model.addAttribute("rating", currentUser.getWatched().get(movie.getTitle()));
-        }
-        else{
+            model.addAttribute("rating", currentUser.getWatched().get(movie.getUniqueId()));
+        } else {
             model.addAttribute("autoselect", 0);
         }
 
@@ -63,101 +63,140 @@ public class movieDetailsController {
     }
 
     @PostMapping("/movieDetails")
-    public ModelAndView updateUser(Authentication auth, Model model, @RequestParam("watched-status") Integer updateUser, @AuthenticationPrincipal OAuth2User user, HttpServletRequest request){
+    public ModelAndView updateUser(Authentication auth, Model model, @RequestParam("watched-status") Integer updateUser,
+            @AuthenticationPrincipal OAuth2User user, HttpServletRequest request) {
         User userObject;
-        if(user == null){
-            userObject = ((User)auth.getPrincipal());
+        if (user == null) {
+            userObject = ((User) auth.getPrincipal());
             userObject = userRepository.findByTwitterId(userObject.getTwitterId()).get();
-        }
-        else{
+        } else {
             userObject = userRepository.findByEmail(user.getAttribute("email")).get();
         }
 
-        String title = (String)request.getSession().getAttribute("movie");
+        String uniqueId = (String) request.getSession().getAttribute("movie");
         System.out.println(updateUser);
-        if(updateUser == 0){
-            if(userObject.getWatched() != null && userObject.getWatched().containsKey(title)){
-                if(userObject.getGenres() != null){
-                    List<String> genres = Arrays.asList(movieRepository.findByTitle(title).get().getGenre().split(", "));
-                    for(String genre : genres){
-                        userObject.getGenres().put(genre, userObject.getGenres().get(genre)-1);
+        if (updateUser == 0) {
+            if (userObject.getWatched() != null && userObject.getWatched().containsKey(uniqueId)) {
+                if (userObject.getGenres() != null) {
+                    List<String> genres = Arrays
+                            .asList(movieRepository.findByUniqueId(uniqueId).getGenre().split(", "));
+                    Integer scoreChange;
+                    for (String genre : genres) {
+                        if (userObject.getGenres().get(genre) != null) {
+                            scoreChange = userObject.getGenres().get(genre)
+                                    + (userObject.getWatched().get(uniqueId) - userObject.getGenres().get(genre)) / 2;
+                        } else {
+                            scoreChange = userObject.getGenres().get(genre);
+                        }
+                        userObject.getGenres().put(genre, scoreChange);
                     }
                 }
-                if(userObject.getActors() != null){
-                    List<String> actors = Arrays.asList(movieRepository.findByTitle(title).get().getActors().split(", "));
-                    for(String actor: actors){
-                        userObject.getActors().put(actor, userObject.getActors().get(actor)-1);
+                if (userObject.getActors() != null) {
+                    List<String> actors = Arrays
+                            .asList(movieRepository.findByUniqueId(uniqueId).getActors().split(", "));
+                    Integer scoreChangeActor;
+                    for (String actor : actors) {
+                        actor = String.join("", Arrays.asList(actor.split("\\.")));
+                        System.out.println(actor);
+                        if (userObject.getGenres().get(actor) != null) {
+                            scoreChangeActor = userObject.getGenres().get(actor)
+                                    + (userObject.getWatched().get(uniqueId) - userObject.getGenres().get(actor)) / 2;
+                        } else {
+                            scoreChangeActor = userObject.getGenres().get(actor);
+                        }
+                        userObject.getActors().put(actor, scoreChangeActor);
                     }
                 }
-                userObject.getWatched().remove(title);
+                userObject.getWatched().remove(uniqueId);
             }
-            /*Iterator<Entry<Movie, Integer>> iterator = userObject.getWatched().entrySet().iterator();
-            while(iterator.hasNext()){
-                if(iterator.next().getKey().getTitle() == model.getAttribute("title")){
-                    iterator.remove();
-                    break;
-                }
-            }*/
-        }
-        else if (updateUser == 1){
-            if(userObject.getWatched() == null){
-                System.out.println("uu = 1, wa = null");
+        } else if (updateUser == 1) {
+            if (userObject.getWatched() == null) {
                 HashMap<String, Integer> map = new HashMap<String, Integer>();
-                map.put(title, 5);
+                map.put(uniqueId, 5);
                 userObject.setWatched(map);
+            } else {
+                userObject.getWatched().put(uniqueId, 5);
+
             }
-            else{
-                userObject.getWatched().put(title, 5);
-                
-            }
-            if(userObject.getActors() == null){
-                HashMap<String, Integer> actorsMap= new HashMap<>();
+            if (userObject.getActors() == null) {
+                HashMap<String, Integer> actorsMap = new HashMap<>();
                 userObject.setActors(actorsMap);
             }
-            if(userObject.getGenres() == null){
+            if (userObject.getGenres() == null) {
                 HashMap<String, Integer> genresMap = new HashMap<>();
                 userObject.setGenres(genresMap);
             }
-            List<String> genres = Arrays.asList(movieRepository.findByTitle(title).get().getGenre().split(", "));
-            for(String genre : genres){
-                if(userObject.getGenres().containsKey(genre)){
-                    userObject.getGenres().put(genre, userObject.getGenres().get(genre)+1);
+            List<String> genres = Arrays.asList(movieRepository.findByUniqueId(uniqueId).getGenre().split(", "));
+            Integer scoreChange;
+            for (String genre : genres) {
+                if (userObject.getGenres().get(genre) != null) {
+                    scoreChange = userObject.getGenres().get(genre)
+                            + (userObject.getWatched().get(uniqueId) - userObject.getGenres().get(genre)) / 2;
+                } else {
+                    scoreChange = 5;
                 }
-                else{
-                    userObject.getGenres().put(genre, 1);
-                }
+                userObject.getGenres().put(genre, scoreChange);
             }
-            List<String> actors = Arrays.asList(movieRepository.findByTitle(title).get().getActors().split(", "));
-            for(String actor: actors){
-                if(userObject.getActors().containsKey(actor)){
-                    userObject.getActors().put(actor, userObject.getActors().get(actor)+1);
+            List<String> actors = Arrays.asList(movieRepository.findByUniqueId(uniqueId).getActors().split(", "));
+            Integer scoreChangeActor;
+            for (String actor : actors) {
+                actor = String.join("", Arrays.asList(actor.split("\\.")));
+                System.out.println(actor);
+                if (userObject.getActors().get(actor) != null) {
+                    scoreChangeActor = userObject.getActors().get(actor)
+                            + (userObject.getWatched().get(uniqueId) - userObject.getActors().get(actor)) / 2;
+                } else {
+                    scoreChangeActor = 5;
                 }
-                else {
-                    userObject.getActors().put(actor, 1);
-                }
+                scoreChangeActor = userObject.getActors().put(actor, scoreChangeActor);
             }
         }
         userRepository.save(userObject);
-        System.out.println("about to redirect");
-        return new ModelAndView("redirect:/movieDetails/" + title);
+        return new ModelAndView("redirect:/movieDetails/" + uniqueId);
     }
 
     @PostMapping("/updateRating")
-    public ModelAndView updateRating(Authentication auth, Model model, @RequestParam("rating") Integer rating, @AuthenticationPrincipal OAuth2User user, HttpServletRequest request){
+    public ModelAndView updateRating(Authentication auth, Model model, @RequestParam("rating") Integer rating,
+            @AuthenticationPrincipal OAuth2User user, HttpServletRequest request) {
         User userObject;
-        if(user == null){
-            userObject = ((User)auth.getPrincipal());
+        if (user == null) {
+            userObject = ((User) auth.getPrincipal());
             userObject = userRepository.findByTwitterId(userObject.getTwitterId()).get();
-        }
-        else{
+        } else {
             userObject = userRepository.findByEmail(user.getAttribute("email")).get();
         }
+
+        String uniqueId = (String) request.getSession().getAttribute("movie");
+        userObject.getWatched().put(uniqueId, rating);
+
+        List<String> genres = Arrays.asList(movieRepository.findByUniqueId(uniqueId).getGenre().split(", "));
+        Integer scoreChange;
+        for (String genre : genres) {
+            if (userObject.getGenres().get(genre) != null) {
+                scoreChange = userObject.getGenres().get(genre)
+                        + (userObject.getWatched().get(uniqueId) - userObject.getGenres().get(genre)) / 2;
+            } else {
+                scoreChange = rating;
+            }
+            System.out.println(scoreChange);
+            userObject.getGenres().put(genre, scoreChange);
+        }
+        List<String> actors = Arrays.asList(movieRepository.findByUniqueId(uniqueId).getActors().split(", "));
+        Integer scoreChangeActor;
+        for (String actor : actors) {
+            actor = String.join("", Arrays.asList(actor.split("\\.")));
+            System.out.println(actor);
+            if (userObject.getActors().get(actor) != null) {
+                scoreChangeActor = userObject.getActors().get(actor)
+                        + (userObject.getWatched().get(uniqueId) - userObject.getActors().get(actor)) / 2;
+            } else {
+                scoreChangeActor = rating;
+            }
+            scoreChangeActor = userObject.getActors().put(actor, scoreChangeActor);
+        }
         
-        String title = (String)request.getSession().getAttribute("movie");
-        userObject.getWatched().put(title, rating);
         userRepository.save(userObject);
 
-
-        return new ModelAndView("redirect:/movieDetails/" + title);
+        return new ModelAndView("redirect:/movieDetails/" + uniqueId);
     }
 }
