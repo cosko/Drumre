@@ -14,10 +14,8 @@
     <header th:replace="layout/fragments/header :: header">HEADER</header>
 
     <div class="h-full">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="max-w-5xl mx-auto mt-3">
-                <th:block th:replace="${content}">CONTENT</th:block>
-            </div>
+        <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+            <th:block th:replace="${content}">CONTENT</th:block>
         </div>
     </div>
 
